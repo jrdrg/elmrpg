@@ -2,7 +2,7 @@ module Model exposing
     (
      Model,
      createModel,
-     Hex, Tile, Player, Enemy, Resource
+     Hex, Tile, Tile(..), Player, Enemy, Resource
     )
 
 
@@ -36,6 +36,7 @@ type Tile =
     Grass |
     Forest |
     Mountain |
+    Hills |
     Water
 
 
@@ -72,15 +73,6 @@ type alias Enemy =
 -- Init functions
 
 
-makeHex: Int -> Int -> Hex
-makeHex width index =
-    {
-        tile = Water,
-        x = index % width,
-        y = index // width
-    }
-
-
 createModel: Model
 createModel =
     {
@@ -98,6 +90,46 @@ initializePlayer =
         xp = { current = 0, next = 10 },
         location = { x = 3, y = 4 }
     }
+
+
+makeHex: Int -> Int -> Hex
+makeHex width index =
+    let
+        tileKey = Array.get index initialMap
+        tile = case tileKey of
+                   Just key ->
+                       numberToTile key
+                   Nothing ->
+                       Water
+    in
+        {
+            tile = tile,
+            x = index % width,
+            y = index // width
+        }
+
+
+initialMap: Array Int
+initialMap =
+    Array.fromList
+        [0, 0, 0, 0, 0, 3, 3, 3
+        ,0, 0, 0, 0, 0, 0, 2, 3
+        ,0, 0, 0, 0, 0, 2, 3, 3
+        ,0, 0, 0, 0, 0, 0, 2, 0
+        ,0, 0, 1, 1, 1, 0, 0, 0
+        ,0, 0, 1, 1, 0, 0, 0, 0
+        ,0, 0, 0, 0, 0, 0, 0, 0
+        ,0, 0, 0, 0, 0, 0, 0, 0]
+
+
+numberToTile: Int -> Tile
+numberToTile key =
+    case key of
+        0 -> Grass
+        1 -> Forest
+        2 -> Hills
+        3 -> Mountain
+        _ -> Water
 
 
 createMap: Grid Hex

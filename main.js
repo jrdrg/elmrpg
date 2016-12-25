@@ -8553,6 +8553,121 @@ var _elm_lang$html$Html_Attributes$classList = function (list) {
 };
 var _elm_lang$html$Html_Attributes$style = _elm_lang$virtual_dom$VirtualDom$style;
 
+var _elm_lang$html$Html_Events$keyCode = A2(_elm_lang$core$Json_Decode$field, 'keyCode', _elm_lang$core$Json_Decode$int);
+var _elm_lang$html$Html_Events$targetChecked = A2(
+	_elm_lang$core$Json_Decode$at,
+	{
+		ctor: '::',
+		_0: 'target',
+		_1: {
+			ctor: '::',
+			_0: 'checked',
+			_1: {ctor: '[]'}
+		}
+	},
+	_elm_lang$core$Json_Decode$bool);
+var _elm_lang$html$Html_Events$targetValue = A2(
+	_elm_lang$core$Json_Decode$at,
+	{
+		ctor: '::',
+		_0: 'target',
+		_1: {
+			ctor: '::',
+			_0: 'value',
+			_1: {ctor: '[]'}
+		}
+	},
+	_elm_lang$core$Json_Decode$string);
+var _elm_lang$html$Html_Events$defaultOptions = _elm_lang$virtual_dom$VirtualDom$defaultOptions;
+var _elm_lang$html$Html_Events$onWithOptions = _elm_lang$virtual_dom$VirtualDom$onWithOptions;
+var _elm_lang$html$Html_Events$on = _elm_lang$virtual_dom$VirtualDom$on;
+var _elm_lang$html$Html_Events$onFocus = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'focus',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onBlur = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'blur',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onSubmitOptions = _elm_lang$core$Native_Utils.update(
+	_elm_lang$html$Html_Events$defaultOptions,
+	{preventDefault: true});
+var _elm_lang$html$Html_Events$onSubmit = function (msg) {
+	return A3(
+		_elm_lang$html$Html_Events$onWithOptions,
+		'submit',
+		_elm_lang$html$Html_Events$onSubmitOptions,
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onCheck = function (tagger) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'change',
+		A2(_elm_lang$core$Json_Decode$map, tagger, _elm_lang$html$Html_Events$targetChecked));
+};
+var _elm_lang$html$Html_Events$onInput = function (tagger) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'input',
+		A2(_elm_lang$core$Json_Decode$map, tagger, _elm_lang$html$Html_Events$targetValue));
+};
+var _elm_lang$html$Html_Events$onMouseOut = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'mouseout',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onMouseOver = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'mouseover',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onMouseLeave = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'mouseleave',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onMouseEnter = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'mouseenter',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onMouseUp = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'mouseup',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onMouseDown = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'mousedown',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onDoubleClick = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'dblclick',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$onClick = function (msg) {
+	return A2(
+		_elm_lang$html$Html_Events$on,
+		'click',
+		_elm_lang$core$Json_Decode$succeed(msg));
+};
+var _elm_lang$html$Html_Events$Options = F2(
+	function (a, b) {
+		return {stopPropagation: a, preventDefault: b};
+	});
+
 var _user$project$Grid$toList = function (grid) {
 	return _elm_lang$core$Array$toList(grid.grid);
 };
@@ -8582,6 +8697,264 @@ var _user$project$Grid$Size = F2(
 		return {width: a, height: b};
 	});
 
+var _user$project$Model$initialMap = _elm_lang$core$Array$fromList(
+	{
+		ctor: '::',
+		_0: 0,
+		_1: {
+			ctor: '::',
+			_0: 0,
+			_1: {
+				ctor: '::',
+				_0: 0,
+				_1: {
+					ctor: '::',
+					_0: 0,
+					_1: {
+						ctor: '::',
+						_0: 0,
+						_1: {
+							ctor: '::',
+							_0: 3,
+							_1: {
+								ctor: '::',
+								_0: 3,
+								_1: {
+									ctor: '::',
+									_0: 3,
+									_1: {
+										ctor: '::',
+										_0: 0,
+										_1: {
+											ctor: '::',
+											_0: 0,
+											_1: {
+												ctor: '::',
+												_0: 0,
+												_1: {
+													ctor: '::',
+													_0: 0,
+													_1: {
+														ctor: '::',
+														_0: 0,
+														_1: {
+															ctor: '::',
+															_0: 0,
+															_1: {
+																ctor: '::',
+																_0: 2,
+																_1: {
+																	ctor: '::',
+																	_0: 3,
+																	_1: {
+																		ctor: '::',
+																		_0: 0,
+																		_1: {
+																			ctor: '::',
+																			_0: 0,
+																			_1: {
+																				ctor: '::',
+																				_0: 0,
+																				_1: {
+																					ctor: '::',
+																					_0: 0,
+																					_1: {
+																						ctor: '::',
+																						_0: 0,
+																						_1: {
+																							ctor: '::',
+																							_0: 2,
+																							_1: {
+																								ctor: '::',
+																								_0: 3,
+																								_1: {
+																									ctor: '::',
+																									_0: 3,
+																									_1: {
+																										ctor: '::',
+																										_0: 0,
+																										_1: {
+																											ctor: '::',
+																											_0: 0,
+																											_1: {
+																												ctor: '::',
+																												_0: 0,
+																												_1: {
+																													ctor: '::',
+																													_0: 0,
+																													_1: {
+																														ctor: '::',
+																														_0: 0,
+																														_1: {
+																															ctor: '::',
+																															_0: 0,
+																															_1: {
+																																ctor: '::',
+																																_0: 2,
+																																_1: {
+																																	ctor: '::',
+																																	_0: 0,
+																																	_1: {
+																																		ctor: '::',
+																																		_0: 0,
+																																		_1: {
+																																			ctor: '::',
+																																			_0: 0,
+																																			_1: {
+																																				ctor: '::',
+																																				_0: 1,
+																																				_1: {
+																																					ctor: '::',
+																																					_0: 1,
+																																					_1: {
+																																						ctor: '::',
+																																						_0: 1,
+																																						_1: {
+																																							ctor: '::',
+																																							_0: 0,
+																																							_1: {
+																																								ctor: '::',
+																																								_0: 0,
+																																								_1: {
+																																									ctor: '::',
+																																									_0: 0,
+																																									_1: {
+																																										ctor: '::',
+																																										_0: 0,
+																																										_1: {
+																																											ctor: '::',
+																																											_0: 0,
+																																											_1: {
+																																												ctor: '::',
+																																												_0: 1,
+																																												_1: {
+																																													ctor: '::',
+																																													_0: 1,
+																																													_1: {
+																																														ctor: '::',
+																																														_0: 0,
+																																														_1: {
+																																															ctor: '::',
+																																															_0: 0,
+																																															_1: {
+																																																ctor: '::',
+																																																_0: 0,
+																																																_1: {
+																																																	ctor: '::',
+																																																	_0: 0,
+																																																	_1: {
+																																																		ctor: '::',
+																																																		_0: 0,
+																																																		_1: {
+																																																			ctor: '::',
+																																																			_0: 0,
+																																																			_1: {
+																																																				ctor: '::',
+																																																				_0: 0,
+																																																				_1: {
+																																																					ctor: '::',
+																																																					_0: 0,
+																																																					_1: {
+																																																						ctor: '::',
+																																																						_0: 0,
+																																																						_1: {
+																																																							ctor: '::',
+																																																							_0: 0,
+																																																							_1: {
+																																																								ctor: '::',
+																																																								_0: 0,
+																																																								_1: {
+																																																									ctor: '::',
+																																																									_0: 0,
+																																																									_1: {
+																																																										ctor: '::',
+																																																										_0: 0,
+																																																										_1: {
+																																																											ctor: '::',
+																																																											_0: 0,
+																																																											_1: {
+																																																												ctor: '::',
+																																																												_0: 0,
+																																																												_1: {
+																																																													ctor: '::',
+																																																													_0: 0,
+																																																													_1: {
+																																																														ctor: '::',
+																																																														_0: 0,
+																																																														_1: {
+																																																															ctor: '::',
+																																																															_0: 0,
+																																																															_1: {
+																																																																ctor: '::',
+																																																																_0: 0,
+																																																																_1: {
+																																																																	ctor: '::',
+																																																																	_0: 0,
+																																																																	_1: {ctor: '[]'}
+																																																																}
+																																																															}
+																																																														}
+																																																													}
+																																																												}
+																																																											}
+																																																										}
+																																																									}
+																																																								}
+																																																							}
+																																																						}
+																																																					}
+																																																				}
+																																																			}
+																																																		}
+																																																	}
+																																																}
+																																															}
+																																														}
+																																													}
+																																												}
+																																											}
+																																										}
+																																									}
+																																								}
+																																							}
+																																						}
+																																					}
+																																				}
+																																			}
+																																		}
+																																	}
+																																}
+																															}
+																														}
+																													}
+																												}
+																											}
+																										}
+																									}
+																								}
+																							}
+																						}
+																					}
+																				}
+																			}
+																		}
+																	}
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	});
 var _user$project$Model$initializePlayer = {
 	hp: 1,
 	xp: {current: 0, next: 10},
@@ -8596,19 +8969,44 @@ var _user$project$Model$Action = {ctor: 'Action'};
 var _user$project$Model$Battle = {ctor: 'Battle'};
 var _user$project$Model$Title = {ctor: 'Title'};
 var _user$project$Model$Water = {ctor: 'Water'};
+var _user$project$Model$Hills = {ctor: 'Hills'};
+var _user$project$Model$Mountain = {ctor: 'Mountain'};
+var _user$project$Model$Forest = {ctor: 'Forest'};
+var _user$project$Model$Grass = {ctor: 'Grass'};
+var _user$project$Model$numberToTile = function (key) {
+	var _p0 = key;
+	switch (_p0) {
+		case 0:
+			return _user$project$Model$Grass;
+		case 1:
+			return _user$project$Model$Forest;
+		case 2:
+			return _user$project$Model$Hills;
+		case 3:
+			return _user$project$Model$Mountain;
+		default:
+			return _user$project$Model$Water;
+	}
+};
 var _user$project$Model$makeHex = F2(
 	function (width, index) {
+		var tileKey = A2(_elm_lang$core$Array$get, index, _user$project$Model$initialMap);
+		var tile = function () {
+			var _p1 = tileKey;
+			if (_p1.ctor === 'Just') {
+				return _user$project$Model$numberToTile(_p1._0);
+			} else {
+				return _user$project$Model$Water;
+			}
+		}();
 		return {
-			tile: _user$project$Model$Water,
+			tile: tile,
 			x: A2(_elm_lang$core$Basics_ops['%'], index, width),
 			y: (index / width) | 0
 		};
 	});
 var _user$project$Model$createMap = A3(_user$project$Grid$initializeGrid, _user$project$Model$makeHex, 8, 8);
 var _user$project$Model$createModel = {currentTick: 0, state: _user$project$Model$Title, player: _user$project$Model$initializePlayer, map: _user$project$Model$createMap};
-var _user$project$Model$Mountain = {ctor: 'Mountain'};
-var _user$project$Model$Forest = {ctor: 'Forest'};
-var _user$project$Model$Grass = {ctor: 'Grass'};
 var _user$project$Model$SomethingElse = {ctor: 'SomethingElse'};
 var _user$project$Model$Gold = {ctor: 'Gold'};
 var _user$project$Model$Stone = {ctor: 'Stone'};
@@ -8649,7 +9047,27 @@ var _user$project$Update$update = F2(
 						return {ctor: '_Tuple2', _0: updated, _1: _elm_lang$core$Platform_Cmd$none};
 					case 'Move':
 						if (_p1._0.ctor === '_Tuple2') {
-							return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+							var setLocation = function (location) {
+								return _elm_lang$core$Native_Utils.update(
+									location,
+									{x: _p1._0._0, y: _p1._0._1});
+							};
+							var updatePlayerLocation = function (player) {
+								return _elm_lang$core$Native_Utils.update(
+									player,
+									{
+										location: setLocation(player.location)
+									});
+							};
+							var updated = _elm_lang$core$Native_Utils.update(
+								model,
+								{
+									player: updatePlayerLocation(model.player)
+								});
+							return A2(
+								_elm_lang$core$Debug$log,
+								'Test',
+								{ctor: '_Tuple2', _0: updated, _1: _elm_lang$core$Platform_Cmd$none});
 						} else {
 							break _v1_2;
 						}
@@ -8663,47 +9081,41 @@ var _user$project$Update$update = F2(
 		}
 	});
 
-var _user$project$View$renderTile = function (tile) {
-	return A2(
-		_elm_lang$html$Html$div,
-		{ctor: '[]'},
-		{ctor: '[]'});
-};
-var _user$project$View$toPx = function (val) {
+var _user$project$Map_Utils$toPx = function (val) {
 	return A2(
 		_elm_lang$core$Basics_ops['++'],
 		_elm_lang$core$Basics$toString(val),
 		'px');
 };
-var _user$project$View$positionStyle = F4(
+var _user$project$Map_Utils$positionStyle = F4(
 	function (width, height, x, y) {
 		return {
 			ctor: '::',
 			_0: {
 				ctor: '_Tuple2',
 				_0: 'width',
-				_1: _user$project$View$toPx(width)
+				_1: _user$project$Map_Utils$toPx(width)
 			},
 			_1: {
 				ctor: '::',
 				_0: {
 					ctor: '_Tuple2',
 					_0: 'height',
-					_1: _user$project$View$toPx(height)
+					_1: _user$project$Map_Utils$toPx(height)
 				},
 				_1: {
 					ctor: '::',
 					_0: {
 						ctor: '_Tuple2',
 						_0: 'left',
-						_1: _user$project$View$toPx(x)
+						_1: _user$project$Map_Utils$toPx(x)
 					},
 					_1: {
 						ctor: '::',
 						_0: {
 							ctor: '_Tuple2',
 							_0: 'top',
-							_1: _user$project$View$toPx(y)
+							_1: _user$project$Map_Utils$toPx(y)
 						},
 						_1: {ctor: '[]'}
 					}
@@ -8711,15 +9123,29 @@ var _user$project$View$positionStyle = F4(
 			}
 		};
 	});
-var _user$project$View$cellSizeY = 30;
-var _user$project$View$cellSizeX = 30;
-var _user$project$View$cellSize = {
-	width: (_user$project$View$cellSizeX * (3 / 2)) - 1,
-	height: (_user$project$View$cellSizeY * _elm_lang$core$Basics$sqrt(3)) - 1
+var _user$project$Map_Utils$cellSizeY = 65 / _elm_lang$core$Basics$sqrt(3);
+var _user$project$Map_Utils$cellSizeX = 40;
+var _user$project$Map_Utils$cellSize = {
+	width: (_user$project$Map_Utils$cellSizeX * (3 / 2)) - 1,
+	height: (_user$project$Map_Utils$cellSizeY * _elm_lang$core$Basics$sqrt(3)) - 1
 };
-var _user$project$View$renderCell = F3(
+var _user$project$Map_Utils$hexCoords = F2(
+	function (x, y) {
+		var y_ = _elm_lang$core$Basics$toFloat(y);
+		var x_ = _elm_lang$core$Basics$toFloat(x);
+		return {
+			x: ((_user$project$Map_Utils$cellSizeX * 3) / 2) * x_,
+			y: (_user$project$Map_Utils$cellSizeY * _elm_lang$core$Basics$sqrt(3)) * (y_ - (0.5 * _elm_lang$core$Basics$toFloat(
+				A2(
+					_elm_lang$core$Basics_ops['%'],
+					_elm_lang$core$Basics$round(x_),
+					2))))
+		};
+	});
+
+var _user$project$Map_View$renderCell = F3(
 	function (contents, x, y) {
-		var _p0 = _user$project$View$cellSize;
+		var _p0 = _user$project$Map_Utils$cellSize;
 		var width = _p0.width;
 		var height = _p0.height;
 		return A2(
@@ -8730,7 +9156,7 @@ var _user$project$View$renderCell = F3(
 				_1: {
 					ctor: '::',
 					_0: _elm_lang$html$Html_Attributes$style(
-						A4(_user$project$View$positionStyle, width, height, x, y)),
+						A4(_user$project$Map_Utils$positionStyle, width, height, x, y)),
 					_1: {ctor: '[]'}
 				}
 			},
@@ -8740,55 +9166,75 @@ var _user$project$View$renderCell = F3(
 				_1: {ctor: '[]'}
 			});
 	});
-var _user$project$View$hexCoords = F2(
-	function (x, y) {
-		var y_ = _elm_lang$core$Basics$toFloat(y);
-		var x_ = _elm_lang$core$Basics$toFloat(x);
-		return {
-			x: ((_user$project$View$cellSizeX * 3) / 2) * x_,
-			y: (_user$project$View$cellSizeY * _elm_lang$core$Basics$sqrt(3)) * (y_ - (0.5 * _elm_lang$core$Basics$toFloat(
-				A2(
-					_elm_lang$core$Basics_ops['%'],
-					_elm_lang$core$Basics$round(x_),
-					2))))
-		};
-	});
-var _user$project$View$renderPlayer = function (player) {
-	var height = 40;
-	var width = 25;
-	var size = _user$project$View$cellSize;
-	var offsetX = (size.width - width) / 2;
-	var offsetY = (size.height - height) / 2;
-	var _p1 = player.location;
-	var x = _p1.x;
-	var y = _p1.y;
-	var pixelLocation = A2(_user$project$View$hexCoords, x, y);
-	return A2(
-		_elm_lang$html$Html$div,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class('player'),
-			_1: {
-				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$style(
-					A4(_user$project$View$positionStyle, width, height, pixelLocation.x + offsetX, pixelLocation.y + offsetY)),
-				_1: {ctor: '[]'}
+var _user$project$Map_View$renderTile = F2(
+	function (tile, location) {
+		var _p1 = function () {
+			var _p2 = tile;
+			switch (_p2.ctor) {
+				case 'Grass':
+					return {ctor: '_Tuple2', _0: -192, _1: 0};
+				case 'Forest':
+					return {ctor: '_Tuple2', _0: -384, _1: 0};
+				case 'Mountain':
+					return {ctor: '_Tuple2', _0: -128, _1: -64};
+				case 'Hills':
+					return {ctor: '_Tuple2', _0: 0, _1: -64};
+				default:
+					return {ctor: '_Tuple2', _0: -64, _1: 0};
 			}
-		},
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html$text('player'),
-			_1: {ctor: '[]'}
-		});
-};
-var _user$project$View$renderGrid = function (grid) {
+		}();
+		var x = _p1._0;
+		var y = _p1._1;
+		var position = A2(
+			_elm_lang$core$Basics_ops['++'],
+			_elm_lang$core$Basics$toString(x),
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				'px ',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					_elm_lang$core$Basics$toString(y),
+					'px')));
+		return A2(
+			_elm_lang$html$Html$div,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('hexImg'),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$style(
+						{
+							ctor: '::',
+							_0: {ctor: '_Tuple2', _0: 'backgroundPosition', _1: position},
+							_1: {ctor: '[]'}
+						}),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$html$Html_Events$onClick(
+							_user$project$Messages$ActionMsg(
+								_user$project$Messages$Move(location))),
+						_1: {ctor: '[]'}
+					}
+				}
+			},
+			{ctor: '[]'});
+	});
+var _user$project$Map_View$view = function (grid) {
 	var pixelLocation = function (cell) {
-		return A2(_user$project$View$hexCoords, cell.x, cell.y);
+		return A2(_user$project$Map_Utils$hexCoords, cell.x, cell.y);
 	};
 	var drawCell = function (cell) {
 		var contents = A2(
+			_user$project$Map_View$renderTile,
+			cell.tile,
+			{ctor: '_Tuple2', _0: cell.x, _1: cell.y});
+		var contents_ = A2(
 			_elm_lang$html$Html$div,
-			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('hexImg'),
+				_1: {ctor: '[]'}
+			},
 			{
 				ctor: '::',
 				_0: _elm_lang$html$Html$text(
@@ -8798,18 +9244,18 @@ var _user$project$View$renderGrid = function (grid) {
 						_elm_lang$core$Basics$toString(cell.y))),
 				_1: {ctor: '[]'}
 			});
-		var _p2 = pixelLocation(cell);
-		var x = _p2.x;
-		var y = _p2.y;
-		return A3(_user$project$View$renderCell, contents, x, y);
+		var _p3 = pixelLocation(cell);
+		var x = _p3.x;
+		var y = _p3.y;
+		return A3(_user$project$Map_View$renderCell, contents, x, y);
 	};
 	var cells = A2(
 		_elm_lang$core$List$map,
 		drawCell,
 		_user$project$Grid$toList(grid));
-	var _p3 = grid.size;
-	var width = _p3.width;
-	var height = _p3.height;
+	var _p4 = grid.size;
+	var width = _p4.width;
+	var height = _p4.height;
 	return A2(
 		_elm_lang$html$Html$div,
 		{
@@ -8819,10 +9265,39 @@ var _user$project$View$renderGrid = function (grid) {
 		},
 		cells);
 };
+
+var _user$project$View$renderPlayer = function (player) {
+	var actualHeight = 40;
+	var actualWidth = 25;
+	var size = _user$project$Map_Utils$cellSize;
+	var _p0 = player.location;
+	var x = _p0.x;
+	var y = _p0.y;
+	var pixelLocation = A2(_user$project$Map_Utils$hexCoords, x, y);
+	var offsetX = pixelLocation.x + ((size.width - actualWidth) / 2);
+	var offsetY = pixelLocation.y + ((size.height - actualHeight) / 2);
+	return A2(
+		_elm_lang$html$Html$div,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('player'),
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$style(
+					A4(_user$project$Map_Utils$positionStyle, actualWidth, actualHeight, offsetX, offsetY)),
+				_1: {ctor: '[]'}
+			}
+		},
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html$text('player'),
+			_1: {ctor: '[]'}
+		});
+};
 var _user$project$View$drawMap = function (model) {
-	var _p4 = model.map.size;
-	var width = _p4.width;
-	var height = _p4.height;
+	var _p1 = model.map.size;
+	var width = _p1.width;
+	var height = _p1.height;
 	var grid = model.map.grid;
 	return A2(
 		_elm_lang$html$Html$div,
@@ -8833,7 +9308,7 @@ var _user$project$View$drawMap = function (model) {
 		},
 		{
 			ctor: '::',
-			_0: _user$project$View$renderGrid(model.map),
+			_0: _user$project$Map_View$view(model.map),
 			_1: {
 				ctor: '::',
 				_0: _user$project$View$renderPlayer(model.player),

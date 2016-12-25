@@ -17,7 +17,14 @@ update msg model =
                         (updated, Cmd.none)
 
                 Move (x, y) ->
-                    (model, Cmd.none)
+                    let
+                        setLocation = \location -> { location | x = x, y = y }
+                        updatePlayerLocation = \player -> { player | location = setLocation player.location }
+                        updated =
+                            {model | player = updatePlayerLocation model.player}
+                    in
+                        Debug.log "Test"
+                        (updated, Cmd.none)
 
                 _ ->
                     (model, Cmd.none)

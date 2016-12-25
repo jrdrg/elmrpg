@@ -1,3 +1,7 @@
+body {
+    font-family: 'VT323', monospace;
+}
+
 .container {
     display: flex;
     flex-direction: column;
@@ -28,11 +32,12 @@
 .mapWrapper {
     position: relative;
     height: 500px;
-    width: 550px;
     overflow: hidden;
-    margin-top: 50px;
-    margin-left: 50px;
+    margin: 50px;
     border: 1px solid #ccc;
+    flex: 1;
+    flex-grow: 0;
+    flex-basis: 700px;
 }
 
 .mapContainer {
@@ -48,10 +53,11 @@
     border-color: #aaa;
     border-width: 1px;
     border-style: solid;
-    width: 350px;
+    width: 475px;
 }
 
 .hex {
+    cursor: pointer;
     background-color: #aca;
     position: absolute;
     display: flex;
@@ -59,9 +65,20 @@
     justify-content: center;
 }
 
+.hexImg {
+    background: url(img/solid_tiles.png);
+    height: 64px;
+    width: 64px;
+}
+
+.hex:hover {
+    opacity: 0.8;
+}
+
 .player {
-    background-color: #979;
+    background-color: white;
     position: absolute;
     transform: rotateX(-60deg) translateY(-10px);
     transform-origin: bottom;
+    transition: 0.5s ease;
 }
