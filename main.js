@@ -9208,17 +9208,6 @@ var _user$project$Map_Model$makeHex = F2(
 	});
 var _user$project$Map_Model$createMap = A3(_user$project$Grid$initializeGrid, _user$project$Map_Model$makeHex, 8, 8);
 
-var _user$project$Model$initializePlayer = {
-	hp: {current: 6, max: 10},
-	xp: {current: 0, next: 10},
-	location: {x: 3, y: 4},
-	str: 5,
-	dex: 7,
-	$int: 7,
-	end: 10,
-	agi: 9,
-	equipped: {weapon: _elm_lang$core$Maybe$Nothing, armor: _elm_lang$core$Maybe$Nothing}
-};
 var _user$project$Model$Model = F5(
 	function (a, b, c, d, e) {
 		return {currentTick: a, state: b, map: c, player: d, messages: e};
@@ -9235,21 +9224,6 @@ var _user$project$Model$MessageDisplayed = {ctor: 'MessageDisplayed'};
 var _user$project$Model$Action = {ctor: 'Action'};
 var _user$project$Model$Battle = {ctor: 'Battle'};
 var _user$project$Model$Map = {ctor: 'Map'};
-var _user$project$Model$createModel = {
-	currentTick: 0,
-	state: _user$project$Model$Map,
-	player: _user$project$Model$initializePlayer,
-	map: _user$project$Map_Model$createMap,
-	messages: {
-		ctor: '::',
-		_0: 'test message',
-		_1: {
-			ctor: '::',
-			_0: 'test message 2',
-			_1: {ctor: '[]'}
-		}
-	}
-};
 var _user$project$Model$Title = {ctor: 'Title'};
 var _user$project$Model$Gold = {ctor: 'Gold'};
 var _user$project$Model$Stone = {ctor: 'Stone'};
@@ -9286,6 +9260,42 @@ var _user$project$Model$weapons = function () {
 			}
 		});
 }();
+var _user$project$Model$Paralyzed = {ctor: 'Paralyzed'};
+var _user$project$Model$Poisoned = {ctor: 'Poisoned'};
+var _user$project$Model$Starving = {ctor: 'Starving'};
+var _user$project$Model$Hungry = {ctor: 'Hungry'};
+var _user$project$Model$Normal = {ctor: 'Normal'};
+var _user$project$Model$initializePlayer = {
+	hp: {current: 6, max: 10},
+	xp: {current: 0, next: 10},
+	location: {x: 3, y: 4},
+	str: 5,
+	dex: 7,
+	$int: 7,
+	end: 10,
+	agi: 9,
+	equipped: {weapon: _elm_lang$core$Maybe$Nothing, armor: _elm_lang$core$Maybe$Nothing},
+	status: {
+		ctor: '::',
+		_0: _user$project$Model$Normal,
+		_1: {ctor: '[]'}
+	}
+};
+var _user$project$Model$createModel = {
+	currentTick: 0,
+	state: _user$project$Model$Map,
+	player: _user$project$Model$initializePlayer,
+	map: _user$project$Map_Model$createMap,
+	messages: {
+		ctor: '::',
+		_0: 'test message',
+		_1: {
+			ctor: '::',
+			_0: 'test message 2',
+			_1: {ctor: '[]'}
+		}
+	}
+};
 
 var _user$project$Messages$SomethingElse = {ctor: 'SomethingElse'};
 var _user$project$Messages$Message = function (a) {
@@ -9333,34 +9343,39 @@ var _user$project$Update$update = F2(
 				case 'ActionMsg':
 					var _p1 = _p0._0;
 					if ((_p1.ctor === 'Move') && (_p1._0.ctor === '_Tuple2')) {
-						var _p4 = _p1._0._1;
-						var _p3 = _p1._0._0;
+						var _p5 = _p1._0._1;
+						var _p4 = _p1._0._0;
 						var _p2 = model;
 						var player = _p2.player;
 						var currentLocation = player.location;
 						var canMove = A2(
 							_user$project$Grid$isNeighbor,
 							currentLocation,
-							{x: _p3, y: _p4});
-						var message = canMove ? A2(
-							_elm_lang$core$Basics_ops['++'],
-							'Moved to ',
-							A2(
-								_elm_lang$core$Basics_ops['++'],
-								_elm_lang$core$Basics$toString(_p3),
-								A2(
-									_elm_lang$core$Basics_ops['++'],
-									', ',
-									_elm_lang$core$Basics$toString(_p4)))) : 'Cannot move there';
+							{x: _p4, y: _p5});
 						var updatedLocation = _elm_lang$core$Native_Utils.update(
 							currentLocation,
-							{x: _p3, y: _p4});
+							{x: _p4, y: _p5});
 						var updatedPlayer = _elm_lang$core$Native_Utils.update(
 							player,
 							{location: updatedLocation});
-						var updated = canMove ? _elm_lang$core$Native_Utils.update(
-							model,
-							{player: updatedPlayer}) : model;
+						var _p3 = canMove ? {
+							ctor: '_Tuple2',
+							_0: _elm_lang$core$Native_Utils.update(
+								model,
+								{player: updatedPlayer}),
+							_1: A2(
+								_elm_lang$core$Basics_ops['++'],
+								'Moved to ',
+								A2(
+									_elm_lang$core$Basics_ops['++'],
+									_elm_lang$core$Basics$toString(_p4),
+									A2(
+										_elm_lang$core$Basics_ops['++'],
+										', ',
+										_elm_lang$core$Basics$toString(_p5))))
+						} : {ctor: '_Tuple2', _0: model, _1: 'Cannot move there'};
+						var updated = _p3._0;
+						var message = _p3._1;
 						var _v2 = _user$project$Messages$Message(message),
 							_v3 = updated;
 						msg = _v2;
@@ -9829,15 +9844,6 @@ var _user$project$View$playerStats = function (player) {
 				_1: {ctor: '[]'}
 			});
 	};
-	var _p1 = player;
-	var hp = _p1.hp;
-	var formattedHp = A2(
-		_elm_lang$core$Basics_ops['++'],
-		_elm_lang$core$Basics$toString(hp.current),
-		A2(
-			_elm_lang$core$Basics_ops['++'],
-			'/',
-			_elm_lang$core$Basics$toString(hp.max)));
 	return A2(
 		_elm_lang$html$Html$div,
 		{
@@ -9861,39 +9867,35 @@ var _user$project$View$playerStats = function (player) {
 						},
 						{
 							ctor: '::',
-							_0: A2(kv, 'hp', formattedHp),
+							_0: A2(
+								kv,
+								'str',
+								_elm_lang$core$Basics$toString(player.str)),
 							_1: {
 								ctor: '::',
 								_0: A2(
 									kv,
-									'str',
-									_elm_lang$core$Basics$toString(player.str)),
+									'dex',
+									_elm_lang$core$Basics$toString(player.dex)),
 								_1: {
 									ctor: '::',
 									_0: A2(
 										kv,
-										'dex',
-										_elm_lang$core$Basics$toString(player.dex)),
+										'int',
+										_elm_lang$core$Basics$toString(player.$int)),
 									_1: {
 										ctor: '::',
 										_0: A2(
 											kv,
-											'int',
-											_elm_lang$core$Basics$toString(player.$int)),
+											'end',
+											_elm_lang$core$Basics$toString(player.end)),
 										_1: {
 											ctor: '::',
 											_0: A2(
 												kv,
-												'end',
-												_elm_lang$core$Basics$toString(player.end)),
-											_1: {
-												ctor: '::',
-												_0: A2(
-													kv,
-													'agi',
-													_elm_lang$core$Basics$toString(player.agi)),
-												_1: {ctor: '[]'}
-											}
+												'agi',
+												_elm_lang$core$Basics$toString(player.agi)),
+											_1: {ctor: '[]'}
 										}
 									}
 								}
@@ -9905,9 +9907,9 @@ var _user$project$View$playerStats = function (player) {
 		});
 };
 var _user$project$View$drawMap = function (model) {
-	var _p2 = model.map.size;
-	var width = _p2.width;
-	var height = _p2.height;
+	var _p1 = model.map.size;
+	var width = _p1.width;
+	var height = _p1.height;
 	var grid = model.map.grid;
 	return A2(
 		_elm_lang$html$Html$div,
@@ -9937,6 +9939,79 @@ var _user$project$View$drawMap = function (model) {
 			_1: {ctor: '[]'}
 		});
 };
+var _user$project$View$drawPlayerHp = function (player) {
+	var info = A2(
+		_elm_lang$html$Html$div,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html$text('HP 6/10'),
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$html$Html$text('MP 10/10'),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('Food 100/100'),
+					_1: {ctor: '[]'}
+				}
+			}
+		});
+	var kv = F2(
+		function (key, value) {
+			return A2(
+				_elm_lang$html$Html$tr,
+				{ctor: '[]'},
+				{
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$td,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('infoRowHeader'),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text(key),
+							_1: {ctor: '[]'}
+						}),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$td,
+							{ctor: '[]'},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text(value),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}
+				});
+		});
+	var header = function (content) {
+		return A2(
+			_elm_lang$html$Html$span,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class('header'),
+				_1: {ctor: '[]'}
+			},
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html$text(content),
+				_1: {ctor: '[]'}
+			});
+	};
+	return A2(
+		_elm_lang$html$Html$div,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: A2(_user$project$View$section, 'Character', info),
+			_1: {ctor: '[]'}
+		});
+};
 var _user$project$View$middleSection = function (model) {
 	return A2(
 		_elm_lang$html$Html$div,
@@ -9947,24 +10022,45 @@ var _user$project$View$middleSection = function (model) {
 		},
 		{
 			ctor: '::',
-			_0: A2(
-				_user$project$View$section,
-				'Map',
-				_user$project$View$drawMap(model)),
+			_0: _user$project$View$drawPlayerHp(model.player),
 			_1: {
 				ctor: '::',
 				_0: A2(
 					_user$project$View$section,
-					'Stats',
-					_user$project$View$playerStats(model.player)),
+					'Map',
+					_user$project$View$drawMap(model)),
 				_1: {
 					ctor: '::',
 					_0: A2(
 						_user$project$View$section,
-						'Actions',
-						_user$project$View$actions(model)),
+						'Stats',
+						_user$project$View$playerStats(model.player)),
 					_1: {ctor: '[]'}
 				}
+			}
+		});
+};
+var _user$project$View$bottomSection = function (model) {
+	return A2(
+		_elm_lang$html$Html$div,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('bottomSection'),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: A2(
+				_user$project$View$section,
+				'Actions',
+				_user$project$View$actions(model)),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_user$project$View$section,
+					'Messages',
+					_user$project$View$messages(model.messages)),
+				_1: {ctor: '[]'}
 			}
 		});
 };
@@ -9981,10 +10077,7 @@ var _user$project$View$mainSection = function (model) {
 			_0: _user$project$View$middleSection(model),
 			_1: {
 				ctor: '::',
-				_0: A2(
-					_user$project$View$section,
-					'Messages',
-					_user$project$View$messages(model.messages)),
+				_0: _user$project$View$bottomSection(model),
 				_1: {ctor: '[]'}
 			}
 		});

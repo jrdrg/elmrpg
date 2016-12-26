@@ -29,16 +29,42 @@ mainSection: Model -> Html Message
 mainSection model =
     div [class "mainSection"]
         [middleSection model
-        ,section "Messages" <| messages model.messages]
+        ,bottomSection model]
+
+
+bottomSection: Model -> Html Message
+bottomSection model =
+    div [class "bottomSection"]
+        [section "Actions" <| actions model
+        ,section "Messages" <| messages model.messages
+        ]
 
 
 middleSection: Model -> Html Message
 middleSection model =
     div [class "middleSection"]
-        [section "Map" <| drawMap model
+        [drawPlayerHp model.player
+        ,section "Map" <| drawMap model
         ,section "Stats" <| playerStats model.player
-        ,section "Actions" <| actions model
         ]
+
+
+drawPlayerHp: Player -> Html Message
+drawPlayerHp player =
+    let
+        header = \content -> span [class "header"] [text content]
+        kv = \key value ->
+             tr []
+                 [td [class "infoRowHeader"] [text key]
+                 ,td [] [text value]]
+        info =
+            div []
+                [text "HP 6/10"
+                ,text "MP 10/10"
+                ,text "Food 100/100"]
+    in
+        div []
+            [section "Character" <| info]
 
 
 drawMap: Model -> Html Message
@@ -58,9 +84,7 @@ drawMap model =
 playerStats: Player -> Html Message
 playerStats player =
     let
-        {hp} = player
         header = \content -> span [class "header"] [text content]
-        formattedHp = (toString hp.current) ++ "/" ++ (toString hp.max)
         kv = \key value ->
              tr []
                  [td [class "infoRowHeader"] [text key]
@@ -70,8 +94,7 @@ playerStats player =
         div [class "playerInfo"]
             [div []
                  [table [class "infoRow"]
-                        [kv "hp" formattedHp
-                        ,kv "str" (toString player.str)
+                        [kv "str" (toString player.str)
                         ,kv "dex" (toString player.dex)
                         ,kv "int" (toString player.int)
                         ,kv "end" (toString player.end)

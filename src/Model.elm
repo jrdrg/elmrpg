@@ -42,6 +42,14 @@ type WeaponType =
     Ranged
 
 
+type StatusCondition =
+    Normal |
+    Hungry |
+    Starving |
+    Poisoned |
+    Paralyzed
+
+
 type alias Weapon =
     {
         name: String,
@@ -61,7 +69,8 @@ type alias Armor =
 type alias Entity a =
     {
         a |
-        hp: { current: Int, max: Int }
+        hp: { current: Int, max: Int },
+        status: List StatusCondition
     }
 
 
@@ -120,7 +129,8 @@ initializePlayer =
             {
                 weapon = Nothing,
                 armor = Nothing
-            }
+            },
+        status = [Normal]
     }
 
 

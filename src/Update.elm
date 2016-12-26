@@ -31,20 +31,12 @@ update msg model =
                         updatedLocation = { currentLocation | x = x, y = y }
                         updatedPlayer = { player | location = updatedLocation }
 
-                        updated =
+                        (updated, message) =
                             if canMove then
-                                {
-                                    model |
-                                    player = updatedPlayer
-                                }
+                                ({ model | player = updatedPlayer },
+                                 "Moved to " ++ (toString x) ++ ", " ++ (toString y))
                             else
-                                model
-
-                        message =
-                            if canMove then
-                                "Moved to " ++ (toString x) ++ ", " ++ (toString y)
-                            else
-                                "Cannot move there"
+                                (model, "Cannot move there")
                     in
                         update (Message message) updated
 

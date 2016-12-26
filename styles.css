@@ -65,6 +65,11 @@ body {
     flex-direction: row;
 }
 
+.bottomSection {
+    flex: 1;
+    display: flex;
+}
+
 
 .playerInfo {
     /* flex: 1; */
