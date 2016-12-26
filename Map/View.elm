@@ -6,7 +6,8 @@ import Html.Events exposing (..)
 import Messages exposing (..)
 import Grid exposing (..)
 import Model exposing (..)
-import Map.Utils exposing (..)
+import Map.Utils exposing (cellSize, positionStyle, hexCoords)
+import Map.Model exposing (Map, Hex, Tile, Tile(..))
 
 
 view: Grid Hex -> Html Message
@@ -18,17 +19,41 @@ view grid =
             \cell ->
                 let
                     {x, y} = pixelLocation cell
-                    contents_ =
-                        div [class "hexImg"]
-                            [text ((cell.x |> toString) ++ (cell.y |> toString))]
-                    contents = renderTile cell.tile (cell.x, cell.y)
                 in
-                    renderCell contents x y
+                    renderCell cell x y
         cells =
             grid |> Grid.toList |> List.map drawCell
     in
         div [class "map"]
             cells
+
+
+renderCell: Hex -> Float -> Float -> Html Message
+renderCell cell x y =
+    let
+        {width, height} = cellSize
+        location = (cell.x, cell.y)
+        contents = renderTileImage cell.tile location
+    in
+        div [class "hex"
+            ,style <| positionStyle width height x y
+            ,onClick <| ActionMsg (Move location)
+            ]
+            [contents]
+
+
+renderTileImage: Tile -> (Int, Int) -> Html Message
+renderTileImage tile location =
+    let
+        className = case tile of
+                        Grass -> "game-icon game-icon-grass grass"
+                        Hills -> "game-icon game-icon-hills hills"
+                        _ -> "game-icon game-icon-peaks mountain"
+    in
+        div [class "hexImg"]
+            [i [class className]
+               []
+            ]
 
 
 renderTile: Tile -> (Int, Int) -> Html Message
@@ -46,20 +71,10 @@ renderTile tile location =
                      Water ->
                          (-64, 0)
         position = (toString x) ++ "px " ++ (toString y) ++ "px"
+        (locX, locY) = location
     in
         div [class "hexImg"
             ,style [("backgroundPosition", position)]
             ,onClick <| ActionMsg (Move location)
             ]
-            []
-
-
-renderCell: Html Message -> Float -> Float -> Html Message
-renderCell contents x y =
-    let
-        {width, height} = cellSize
-    in
-        div [class "hex"
-            ,style <| positionStyle width height x y
-            ]
-            [contents]
+            [text ((locX |> toString) ++ (locY |> toString))]

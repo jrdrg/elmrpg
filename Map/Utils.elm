@@ -2,12 +2,11 @@ module Map.Utils exposing (..)
 
 
 cellSizeX: Float
-cellSizeX = 40
+cellSizeX = 65 / (3 / 2) -- 64 cell width
 
 
 cellSizeY: Float
 cellSizeY = 65 / (sqrt 3) -- to get a 64px cell height
--- cellSizeY = 40
 
 
 cellSize: { width: Float, height: Float }

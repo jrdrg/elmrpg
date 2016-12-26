@@ -6,16 +6,16 @@ import Time exposing (Time)
 
 
 type Message =
+    Tick Time |
     ActionMsg Action |
+    Message String |
     SomethingElse
 
 
 type Action =
-    Tick Time |
     Move Location |
     Gather Resource |
-    StartCombat Enemy |
-    Enter
+    StartCombat Enemy
 
 
 type CombatAction =

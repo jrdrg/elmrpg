@@ -1,11 +1,15 @@
 body {
-    font-family: 'VT323', monospace;
+    /* font-family: 'VT323', monospace; */
+    /* font-family: 'Open Sans Condensed', sans-serif; */
+    /* font-family: 'Gentium Book Basic', serif; */
+    /* font-family: 'Roboto', sans-serif; */
+    font-family: 'Lora', serif;
 }
 
 .container {
     display: flex;
     flex-direction: column;
-    background-color: #eee;
+    background-color: black;
     position: absolute;
     top: 0;
     bottom:0;
@@ -15,6 +19,7 @@ body {
 
 .topBar {
     background-color: #bbb;
+    padding: 10px;
     display: flex;
     flex: 1;
     flex-grow: 0;
@@ -22,29 +27,106 @@ body {
     align-items: center;
 }
 
+
+.section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.sectionHeader {
+    flex: 1;
+    flex-grow: 0;
+    font-size: 20px;
+    color: white;
+    margin-bottom: 5px;
+}
+
+.sectionContent {
+    padding: 5px;
+    display: flex;
+    flex: 1;
+}
+
 .mainSection {
     flex: 1;
+    flex-direction: column;
+    width: 1200px;
+    margin: auto;
     display: flex;
     background: black;
 }
 
+.middleSection {
+    flex: 1;
+    /* flex-basis: 200px; */
+    display: flex;
+    flex-direction: row;
+}
+
+
+.playerInfo {
+    /* flex: 1; */
+    /* padding: 10px; */
+    color: white;
+}
+
+.header {
+    font-size: 20px;
+}
+
+.infoRowHeader {
+    /* text-align: right; */
+    margin-right: 5px;
+    color: #ccc;
+}
+
+.infoRow {
+    margin-left: 10px;
+}
+
+
+.actions {
+    flex: 1;
+    color: white;
+    background-color: #222;
+    padding: 10px;
+}
+
+.actionLink {
+    cursor: pointer;
+    margin: 10px 0;
+    font-size: 16px;
+}
+
+
+.messages {
+    flex: 2;
+    background-color: #444;
+    color: white;
+    padding: 10px;
+}
+
 
 .mapWrapper {
+    /* background: black; */
+    background: #469;
     position: relative;
-    height: 500px;
+    /* height: 500px; */
     overflow: hidden;
-    margin: 50px;
+    /* margin: 5px; */
     border: 1px solid #ccc;
     flex: 1;
     flex-grow: 0;
-    flex-basis: 700px;
+    flex-basis: 500px;
 }
 
 .mapContainer {
     background-color: #977;
     position: absolute;
     top: 100px;
-    left: 100px;
+    left: 000px;
     transform: perspective(800px) rotateX(60deg);
     transform-style: preserve-3d;
 }
@@ -59,6 +141,7 @@ body {
 .hex {
     cursor: pointer;
     background-color: #aca;
+    border: 1px solid #999;
     position: absolute;
     display: flex;
     align-items: center;
@@ -66,9 +149,16 @@ body {
 }
 
 .hexImg {
-    background: url(img/solid_tiles.png);
-    height: 64px;
-    width: 64px;
+    font-size: 50px;
+
+    /* background: url(img/solid_tiles.png); */
+    /* background: url(img/Ground0.png); */
+    /* height: 64px; */
+    /* width: 64px; */
+
+    /* height: 16px; */
+    /* width: 16px; */
+    /* transform: scale(4); */
 }
 
 .hex:hover {
@@ -76,9 +166,31 @@ body {
 }
 
 .player {
-    background-color: white;
+    /* background-color: white; */
+    color: white;
+    font-size: 40px;
     position: absolute;
     transform: rotateX(-60deg) translateY(-10px);
     transform-origin: bottom;
     transition: 0.5s ease;
+    text-shadow: 2px 1px 2px #000
+}
+
+
+
+/* Tile types */
+
+.grass {
+    color: green;
+    font-size: 32px;
+}
+
+.mountain {
+    color: gray;
+    font-size: 50px;
+}
+
+.hills {
+    color: #8c5b00;
+    font-size: 40px;
 }

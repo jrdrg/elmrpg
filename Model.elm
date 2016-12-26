@@ -2,63 +2,84 @@ module Model exposing
     (
      Model,
      createModel,
-     Hex, Tile, Tile(..), Player, Enemy, Resource
+     Player, Enemy, Resource
     )
 
 
 import Array exposing (Array)
 import Grid exposing (..)
-
+import Dict exposing (Dict)
+import Map.Model exposing (..)
 
 type alias Model =
     {
         currentTick: Float,
         state: GameState,
-        map: Grid Hex,
-        player: Player
-    }
-
-type alias Hex =
-    Grid.Point
-    {
-        tile: Tile
+        map: Map,
+        player: Player,
+        messages: List String
     }
 
 
 type GameState =
     Title |
+    Map |
     Battle |
     Action |
     MessageDisplayed
 
 
-type Tile =
-    Grass |
-    Forest |
-    Mountain |
-    Hills |
-    Water
-
-
 type Resource =
     Wood |
     Stone |
-    Gold |
-    SomethingElse
+    Gold
+
+
+type WeaponType =
+    Sword |
+    Axe |
+    Dagger |
+    Ranged
+
+
+type alias Weapon =
+    {
+        name: String,
+        weaponType: WeaponType,
+        damage: { n: Int, d: Int, mod: Int } -- e.g. 2d8 + 1
+    }
+
+
+type alias Armor =
+    {
+        name: String,
+        ac: Int,
+        damageReduction: Int
+    }
 
 
 type alias Entity a =
     {
         a |
-        hp: Int
+        hp: { current: Int, max: Int }
     }
 
 
 type alias Player =
     Entity
     {
+        str: Int,
+        dex: Int,
+        int: Int,
+        agi: Int,
+        end: Int,
         location: Grid.Point {},
-        xp: { current: Int, next: Int }
+        xp: { current: Int, next: Int },
+        equipped:
+            {
+                weapon: Maybe Weapon,
+                armor: Maybe Armor
+            }
     }
 
 
@@ -77,61 +98,38 @@ createModel: Model
 createModel =
     {
         currentTick = 0,
-        state = Title,
+        state = Map,
         player = initializePlayer,
-        map = createMap
+        map = createMap,
+        messages = ["test message", "test message 2"]
     }
 
 
 initializePlayer: Player
 initializePlayer =
     {
-        hp = 1,
+        hp = { current = 6, max = 10 },
         xp = { current = 0, next = 10 },
-        location = { x = 3, y = 4 }
+        location = { x = 3, y = 4 },
+        str = 5,
+        dex = 7,
+        int = 7,
+        end = 10,
+        agi = 9,
+        equipped =
+            {
+                weapon = Nothing,
+                armor = Nothing
+            }
     }
 
 
-makeHex: Int -> Int -> Hex
-makeHex width index =
+weapons: Dict String Weapon
+weapons =
     let
-        tileKey = Array.get index initialMap
-        tile = case tileKey of
-                   Just key ->
-                       numberToTile key
-                   Nothing ->
-                       Water
+        makeWeapon = \name type_ n d mod -> { name = name, weaponType = type_, damage = { n = n, d = d, mod = mod }}
     in
-        {
-            tile = tile,
-            x = index % width,
-            y = index // width
-        }
-
-
-initialMap: Array Int
-initialMap =
-    Array.fromList
-        [0, 0, 0, 0, 0, 3, 3, 3
-        ,0, 0, 0, 0, 0, 0, 2, 3
-        ,0, 0, 0, 0, 0, 2, 3, 3
-        ,0, 0, 0, 0, 0, 0, 2, 0
-        ,0, 0, 1, 1, 1, 0, 0, 0
-        ,0, 0, 1, 1, 0, 0, 0, 0
-        ,0, 0, 0, 0, 0, 0, 0, 0
-        ,0, 0, 0, 0, 0, 0, 0, 0]
-
-
-numberToTile: Int -> Tile
-numberToTile key =
-    case key of
-        0 -> Grass
-        1 -> Forest
-        2 -> Hills
-        3 -> Mountain
-        _ -> Water
-
-
-createMap: Grid Hex
-createMap =
-    initializeGrid makeHex 8 8
+        Dict.fromList
+            [("shortsword", makeWeapon "Short Sword" Sword 1 6 0)
+            ,("handaxe", makeWeapon "Hand Axe" Axe 1 8 1)
+            ]

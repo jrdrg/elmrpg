@@ -1,10 +1,12 @@
 module Main exposing (..)
 
 import Html
+import Time
+import AnimationFrame
 import Update exposing (update)
 import Model exposing (Model, createModel)
 import View exposing (view)
-import Messages exposing (Message)
+import Messages exposing (..)
 
 
 main: Program Never Model Message
@@ -25,4 +27,6 @@ init =
 
 subscriptions: Model -> Sub Message
 subscriptions model =
-    Sub.batch []
+    Sub.batch [
+         AnimationFrame.times Tick
+        ]
