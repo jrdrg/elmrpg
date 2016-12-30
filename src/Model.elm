@@ -2,14 +2,16 @@ module Model exposing
     (
      Model,
      createModel,
-     Player, Enemy, Resource
+     Player, Enemy
     )
 
 
-import Array exposing (Array)
 import Grid exposing (..)
 import Dict exposing (Dict)
+import Types exposing (..)
 import Map.Model exposing (..)
+import StatusEffects exposing (..)
+
 
 type alias Model =
     {
@@ -19,35 +21,6 @@ type alias Model =
         player: Player,
         messages: List String
     }
-
-
-type GameState =
-    Title |
-    Map |
-    Battle |
-    Action |
-    MessageDisplayed
-
-
-type Resource =
-    Wood |
-    Stone |
-    Gold
-
-
-type WeaponType =
-    Sword |
-    Axe |
-    Dagger |
-    Ranged
-
-
-type StatusCondition =
-    Normal |
-    Hungry |
-    Starving |
-    Poisoned |
-    Paralyzed
 
 
 type alias Weapon =
@@ -66,17 +39,24 @@ type alias Armor =
     }
 
 
+type alias Ring =
+    {
+
+    }
+
+
 type alias Entity a =
     {
         a |
         hp: { current: Int, max: Int },
-        status: List StatusCondition
+        status: List StatusEffect
     }
 
 
 type alias Player =
     Entity
     {
+        level: Int,
         str: Int,
         dex: Int,
         int: Int,
@@ -84,11 +64,15 @@ type alias Player =
         end: Int,
         location: Grid.Point {},
         xp: { current: Int, next: Int },
-        equipped:
-            {
-                weapon: Maybe Weapon,
-                armor: Maybe Armor
-            }
+        equipped: Equipment
+    }
+
+
+type alias Equipment =
+    {
+        weapon: Maybe Weapon,
+        armor: Maybe Armor,
+        ring: Maybe Ring
     }
 
 
@@ -117,6 +101,7 @@ createModel =
 initializePlayer: Player
 initializePlayer =
     {
+        level = 1,
         hp = { current = 6, max = 10 },
         xp = { current = 0, next = 10 },
         location = { x = 3, y = 4 },
@@ -128,7 +113,8 @@ initializePlayer =
         equipped =
             {
                 weapon = Nothing,
-                armor = Nothing
+                armor = Nothing,
+                ring = Nothing
             },
         status = [Normal]
     }

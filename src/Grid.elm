@@ -1,7 +1,7 @@
 module Grid exposing
     (
      Grid, Point,
-     initializeGrid, toList, isNeighbor
+     initializeGrid, toList, isNeighbor, distance
     )
 
 
@@ -40,11 +40,7 @@ initializeGrid initCell width height =
 
 isNeighbor: Point a -> Point a -> Bool
 isNeighbor p1 p2 =
-    let
-        cube1 = offsetToCube p1
-        cube2 = offsetToCube p2
-    in
-        distance cube1 cube2 == 1
+    distance p1 p2 == 1
 
 
 elementAt: Grid a -> Int -> Int -> Maybe a
@@ -61,6 +57,13 @@ toList grid =
     Array.toList grid.grid
 
 
+distance: Point a -> Point a -> Float
+distance p1 p2 =
+    let
+        cube1 = offsetToCube p1
+        cube2 = offsetToCube p2
+    in
+        cubeDistance cube1 cube2
 
 
 type alias CubePoint =
@@ -99,8 +102,8 @@ cubeToOffset cube =
         }
 
 
-distance: CubePoint -> CubePoint -> Float
-distance p1 p2 =
+cubeDistance: CubePoint -> CubePoint -> Float
+cubeDistance p1 p2 =
     let
         dx = abs (p1.x - p2.x)
         dy = abs (p1.y - p2.y)

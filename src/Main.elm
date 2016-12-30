@@ -1,7 +1,6 @@
 module Main exposing (..)
 
 import Html
-import Time
 import AnimationFrame
 import Update exposing (update)
 import Model exposing (Model, createModel)

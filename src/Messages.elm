@@ -1,15 +1,18 @@
 module Messages exposing (..)
 
 
+import Types exposing (..)
 import Model exposing (..)
 import Time exposing (Time)
 
 
 type Message =
     Tick Time |
+    ChangeState GameState |
     ActionMsg Action |
     Message String |
-    SomethingElse
+    RandomEvent Int |
+    CombatMsg CombatAction
 
 
 type Action =

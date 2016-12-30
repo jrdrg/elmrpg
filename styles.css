@@ -1,3 +1,7 @@
+/****************************/
+/* Top-level */
+/****************************/
+
 body {
     /* font-family: 'VT323', monospace; */
     /* font-family: 'Open Sans Condensed', sans-serif; */
@@ -6,15 +10,15 @@ body {
     font-family: 'Lora', serif;
 }
 
-.container {
-    display: flex;
-    flex-direction: column;
-    background-color: black;
-    position: absolute;
-    top: 0;
-    bottom:0;
-    left: 0;
-    right: 0;
+.____container {
+    /* display: flex; */
+    /* flex-direction: column; */
+    /* background-color: black; */
+    /* position: absolute; */
+    /* top: 0; */
+    /* bottom:0; */
+    /* left: 0; */
+    /* right: 0; */
 }
 
 .topBar {
@@ -28,26 +32,14 @@ body {
 }
 
 
-.section {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    padding: 10px;
+.bgcolor {
+    background: wheat;
 }
 
-.sectionHeader {
-    flex: 1;
-    flex-grow: 0;
-    font-size: 20px;
-    color: white;
-    margin-bottom: 5px;
-}
 
-.sectionContent {
-    padding: 5px;
-    display: flex;
-    flex: 1;
-}
+/****************************/
+/* Sections */
+/****************************/
 
 .mainSection {
     flex: 1;
@@ -71,10 +63,22 @@ body {
 }
 
 
+/****************************/
+/* Misc */
+/****************************/
+
+.character {
+    /* border: 1px solid #222; */
+    color: black;
+    flex-grow: 0;
+    padding: 10px;
+}
+
+
 .playerInfo {
     /* flex: 1; */
     /* padding: 10px; */
-    color: white;
+    color: black;
 }
 
 .header {
@@ -84,19 +88,23 @@ body {
 .infoRowHeader {
     /* text-align: right; */
     margin-right: 5px;
-    color: #ccc;
+    color: #444;
 }
 
 .infoRow {
-    margin-left: 10px;
+    /* margin-left: 10px; */
 }
 
 
 .actions {
-    flex: 1;
-    color: white;
-    background-color: #222;
-    padding: 10px;
+    /* flex: 1; */
+    /* color: black; */
+    /* background-color: #222; */
+    /* padding: 10px; */
+}
+
+.boxSection {
+    background-color: burlywood;
 }
 
 .actionLink {
@@ -114,11 +122,17 @@ body {
 }
 
 
+/****************************/
+/* Map */
+/****************************/
+
 .mapWrapper {
-    /* background: black; */
-    background: #469;
+    /* background: url(img/parchment.jpg); */
+    background: #543;
+    /* background: #555; */
+    /* background: #469; */
     position: relative;
-    /* height: 500px; */
+    height: 500px;
     overflow: hidden;
     /* margin: 5px; */
     border: 1px solid #ccc;
@@ -132,29 +146,38 @@ body {
     position: absolute;
     top: 100px;
     left: 000px;
+}
+
+.map3d {
     transform: perspective(800px) rotateX(60deg);
     transform-style: preserve-3d;
 }
 
 .map {
-    border-color: #aaa;
-    border-width: 1px;
-    border-style: solid;
+    /* border-color: #aaa; */
+    /* border-width: 1px; */
+    /* border-style: solid; */
     width: 475px;
 }
 
 .hex {
     cursor: pointer;
-    background-color: #aca;
-    border: 1px solid #999;
+    /* background-color: #aca; */
+    background-color: wheat;
+    /* border: 1px solid #999; */
     position: absolute;
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: 1s opacity ease;
 }
 
 .hexImg {
     font-size: 50px;
+    /* height: 64px; */
+    /* width: 64px; */
+    height: 32px;
+    width: 32px;
 
     /* background: url(img/solid_tiles.png); */
     /* background: url(img/Ground0.png); */
@@ -170,23 +193,49 @@ body {
     opacity: 0.8;
 }
 
+.pixelImage {
+    image-rendering: optimizeSpeed;             /* STOP SMOOTHING, GIVE ME SPEED  */
+    image-rendering: -moz-crisp-edges;          /* Firefox                        */
+    image-rendering: -o-crisp-edges;            /* Opera                          */
+    image-rendering: -webkit-optimize-contrast; /* Chrome (and eventually Safari) */
+    image-rendering: pixelated; /* Chrome */
+    image-rendering: optimize-contrast;         /* CSS3 Proposed                  */
+    -ms-interpolation-mode: nearest-neighbor;   /* IE8+                           */
+}
+
+.playerImg {
+    background: url(img/Humanoid0.png) -112px -32px;
+    height: 16px;
+    width: 16px;
+    transform: scale(2);
+    transform-origin: 0 0
+}
+
 .player {
     /* background-color: white; */
-    color: white;
-    font-size: 40px;
+    /* color: white; */
+    color: black;
+    /* font-size: 40px; */
+    font-size: 32px;
     position: absolute;
+    transition: 0.5s ease;
+    /* text-shadow: 2px 1px 2px #000 */
+    text-shadow: 1px 1px 1px #fff;
+}
+
+.player3d {
     transform: rotateX(-60deg) translateY(-10px);
     transform-origin: bottom;
-    transition: 0.5s ease;
-    text-shadow: 2px 1px 2px #000
 }
 
 
 
+/****************************/
 /* Tile types */
+/****************************/
 
 .grass {
-    color: green;
+    color: #797;
     font-size: 32px;
 }
 
@@ -198,4 +247,28 @@ body {
 .hills {
     color: #8c5b00;
     font-size: 40px;
+}
+
+
+.tileImage {
+    height: 16px;
+    width: 16px;
+    transform: scale(2);
+    transform-origin: 0 0
+}
+
+.grassTile {
+    /* background: url(img/Floor.png) -128px -112px; */
+    background: url(img/Ground0.png) 0px -0px;
+}
+
+.hillTile {
+    /* background: url(img/Hill0.png) -48px -192px; */
+    background: url(img/Hill0.png) -240px -48px;
+}
+
+.mountainTile {
+    /* background: url(img/Hill0.png) -176px 0px; */
+    /* background: url(img/Hill0.png) -16px -48px; */
+    background: url(img/Hill0.png) -176px -0px;
 }

@@ -25,7 +25,7 @@ type Tile =
 
 createMap: Grid Hex
 createMap =
-    initializeGrid makeHex 8 8
+    initializeGrid makeHex 9 8
 
 
 makeHex: Int -> Int -> Hex
@@ -48,14 +48,14 @@ makeHex width index =
 initialMap: Array Int
 initialMap =
     Array.fromList
-        [0, 0, 0, 0, 0, 3, 3, 3
-        ,0, 2, 0, 0, 0, 0, 2, 3
-        ,0, 0, 0, 0, 0, 2, 3, 3
-        ,0, 0, 0, 0, 0, 0, 2, 0
-        ,0, 0, 1, 1, 1, 0, 0, 0
-        ,0, 0, 1, 1, 0, 0, 0, 0
-        ,0, 0, 0, 0, 0, 0, 0, 0
-        ,0, 0, 0, 0, 0, 0, 0, 0]
+        [0, 0, 0, 0, 0, 3, 3, 3, 3
+        ,0, 2, 0, 0, 0, 0, 2, 3, 3
+        ,0, 0, 0, 0, 0, 2, 3, 3, 2
+        ,0, 0, 0, 0, 0, 0, 2, 0, 1
+        ,0, 0, 1, 1, 1, 0, 0, 0, 2
+        ,0, 0, 1, 1, 0, 0, 0, 0, 3
+        ,0, 0, 0, 0, 0, 0, 0, 0, 3
+        ,0, 0, 0, 0, 0, 0, 0, 2, 3]
 
 
 numberToTile: Int -> Tile

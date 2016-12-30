@@ -8837,7 +8837,7 @@ var _elm_lang$html$Html_Events$Options = F2(
 		return {stopPropagation: a, preventDefault: b};
 	});
 
-var _user$project$Grid$distance = F2(
+var _user$project$Grid$cubeDistance = F2(
 	function (p1, p2) {
 		var dz = _elm_lang$core$Basics$abs(p1.z - p2.z);
 		var dy = _elm_lang$core$Basics$abs(p1.y - p2.y);
@@ -8870,6 +8870,12 @@ var _user$project$Grid$offsetToCube = function (offset) {
 		z: _elm_lang$core$Basics$round(z_)
 	};
 };
+var _user$project$Grid$distance = F2(
+	function (p1, p2) {
+		var cube2 = _user$project$Grid$offsetToCube(p2);
+		var cube1 = _user$project$Grid$offsetToCube(p1);
+		return A2(_user$project$Grid$cubeDistance, cube1, cube2);
+	});
 var _user$project$Grid$toList = function (grid) {
 	return _elm_lang$core$Array$toList(grid.grid);
 };
@@ -8882,10 +8888,8 @@ var _user$project$Grid$elementAt = F3(
 	});
 var _user$project$Grid$isNeighbor = F2(
 	function (p1, p2) {
-		var cube2 = _user$project$Grid$offsetToCube(p2);
-		var cube1 = _user$project$Grid$offsetToCube(p1);
 		return _elm_lang$core$Native_Utils.eq(
-			A2(_user$project$Grid$distance, cube1, cube2),
+			A2(_user$project$Grid$distance, p1, p2),
 			1);
 	});
 var _user$project$Grid$initializeGrid = F3(
@@ -9208,6 +9212,56 @@ var _user$project$Map_Model$makeHex = F2(
 	});
 var _user$project$Map_Model$createMap = A3(_user$project$Grid$initializeGrid, _user$project$Map_Model$makeHex, 8, 8);
 
+var _user$project$StatusEffects$toString = function (status) {
+	var _p0 = status;
+	switch (_p0.ctor) {
+		case 'Normal':
+			return 'Normal';
+		case 'Hungry':
+			return 'Hungry';
+		case 'Starving':
+			return 'Starving';
+		case 'Poisoned':
+			return 'Poisoned';
+		default:
+			return 'Paralyzed';
+	}
+};
+var _user$project$StatusEffects$Paralyzed = {ctor: 'Paralyzed'};
+var _user$project$StatusEffects$Poisoned = {ctor: 'Poisoned'};
+var _user$project$StatusEffects$Starving = {ctor: 'Starving'};
+var _user$project$StatusEffects$Hungry = {ctor: 'Hungry'};
+var _user$project$StatusEffects$Normal = {ctor: 'Normal'};
+var _user$project$StatusEffects$setStatus = F2(
+	function (status, statuses) {
+		var _p1 = status;
+		if (_p1.ctor === 'Normal') {
+			return {
+				ctor: '::',
+				_0: _user$project$StatusEffects$Normal,
+				_1: {ctor: '[]'}
+			};
+		} else {
+			return A2(_elm_lang$core$List$member, status, statuses) ? statuses : {ctor: '::', _0: status, _1: statuses};
+		}
+	});
+
+var _user$project$Model$initializePlayer = {
+	hp: {current: 6, max: 10},
+	xp: {current: 0, next: 10},
+	location: {x: 3, y: 4},
+	str: 5,
+	dex: 7,
+	$int: 7,
+	end: 10,
+	agi: 9,
+	equipped: {weapon: _elm_lang$core$Maybe$Nothing, armor: _elm_lang$core$Maybe$Nothing},
+	status: {
+		ctor: '::',
+		_0: _user$project$StatusEffects$Normal,
+		_1: {ctor: '[]'}
+	}
+};
 var _user$project$Model$Model = F5(
 	function (a, b, c, d, e) {
 		return {currentTick: a, state: b, map: c, player: d, messages: e};
@@ -9224,6 +9278,21 @@ var _user$project$Model$MessageDisplayed = {ctor: 'MessageDisplayed'};
 var _user$project$Model$Action = {ctor: 'Action'};
 var _user$project$Model$Battle = {ctor: 'Battle'};
 var _user$project$Model$Map = {ctor: 'Map'};
+var _user$project$Model$createModel = {
+	currentTick: 0,
+	state: _user$project$Model$Map,
+	player: _user$project$Model$initializePlayer,
+	map: _user$project$Map_Model$createMap,
+	messages: {
+		ctor: '::',
+		_0: 'test message',
+		_1: {
+			ctor: '::',
+			_0: 'test message 2',
+			_1: {ctor: '[]'}
+		}
+	}
+};
 var _user$project$Model$Title = {ctor: 'Title'};
 var _user$project$Model$Gold = {ctor: 'Gold'};
 var _user$project$Model$Stone = {ctor: 'Stone'};
@@ -9260,44 +9329,10 @@ var _user$project$Model$weapons = function () {
 			}
 		});
 }();
-var _user$project$Model$Paralyzed = {ctor: 'Paralyzed'};
-var _user$project$Model$Poisoned = {ctor: 'Poisoned'};
-var _user$project$Model$Starving = {ctor: 'Starving'};
-var _user$project$Model$Hungry = {ctor: 'Hungry'};
-var _user$project$Model$Normal = {ctor: 'Normal'};
-var _user$project$Model$initializePlayer = {
-	hp: {current: 6, max: 10},
-	xp: {current: 0, next: 10},
-	location: {x: 3, y: 4},
-	str: 5,
-	dex: 7,
-	$int: 7,
-	end: 10,
-	agi: 9,
-	equipped: {weapon: _elm_lang$core$Maybe$Nothing, armor: _elm_lang$core$Maybe$Nothing},
-	status: {
-		ctor: '::',
-		_0: _user$project$Model$Normal,
-		_1: {ctor: '[]'}
-	}
-};
-var _user$project$Model$createModel = {
-	currentTick: 0,
-	state: _user$project$Model$Map,
-	player: _user$project$Model$initializePlayer,
-	map: _user$project$Map_Model$createMap,
-	messages: {
-		ctor: '::',
-		_0: 'test message',
-		_1: {
-			ctor: '::',
-			_0: 'test message 2',
-			_1: {ctor: '[]'}
-		}
-	}
-};
 
-var _user$project$Messages$SomethingElse = {ctor: 'SomethingElse'};
+var _user$project$Messages$CombatMsg = function (a) {
+	return {ctor: 'CombatMsg', _0: a};
+};
 var _user$project$Messages$Message = function (a) {
 	return {ctor: 'Message', _0: a};
 };
@@ -9321,72 +9356,80 @@ var _user$project$Messages$Fight = {ctor: 'Fight'};
 
 var _user$project$Update$update = F2(
 	function (msg, model) {
-		update:
-		while (true) {
-			var _p0 = msg;
-			switch (_p0.ctor) {
-				case 'Tick':
-					var updated = _elm_lang$core$Native_Utils.update(
-						model,
-						{currentTick: _p0._0});
-					return {ctor: '_Tuple2', _0: updated, _1: _elm_lang$core$Platform_Cmd$none};
-				case 'Message':
-					var updated = _elm_lang$core$Native_Utils.update(
-						model,
-						{
-							messages: A2(
-								_elm_lang$core$List$take,
-								10,
-								{ctor: '::', _0: _p0._0, _1: model.messages})
-						});
-					return {ctor: '_Tuple2', _0: updated, _1: _elm_lang$core$Platform_Cmd$none};
-				case 'ActionMsg':
-					var _p1 = _p0._0;
-					if ((_p1.ctor === 'Move') && (_p1._0.ctor === '_Tuple2')) {
-						var _p5 = _p1._0._1;
-						var _p4 = _p1._0._0;
-						var _p2 = model;
-						var player = _p2.player;
-						var currentLocation = player.location;
-						var canMove = A2(
-							_user$project$Grid$isNeighbor,
-							currentLocation,
-							{x: _p4, y: _p5});
-						var updatedLocation = _elm_lang$core$Native_Utils.update(
-							currentLocation,
-							{x: _p4, y: _p5});
-						var updatedPlayer = _elm_lang$core$Native_Utils.update(
-							player,
-							{location: updatedLocation});
-						var _p3 = canMove ? {
-							ctor: '_Tuple2',
-							_0: _elm_lang$core$Native_Utils.update(
-								model,
-								{player: updatedPlayer}),
-							_1: A2(
+		var _p0 = msg;
+		if (_p0.ctor === 'Tick') {
+			var updated = _elm_lang$core$Native_Utils.update(
+				model,
+				{currentTick: _p0._0});
+			return {ctor: '_Tuple2', _0: updated, _1: _elm_lang$core$Platform_Cmd$none};
+		} else {
+			var _p1 = model.state;
+			if (_p1.ctor === 'Map') {
+				return A2(_user$project$Update$mapUpdate, msg, model);
+			} else {
+				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+			}
+		}
+	});
+var _user$project$Update$mapUpdate = F2(
+	function (msg, model) {
+		var _p2 = msg;
+		switch (_p2.ctor) {
+			case 'Message':
+				var updated = _elm_lang$core$Native_Utils.update(
+					model,
+					{
+						messages: A2(
+							_elm_lang$core$List$take,
+							10,
+							{ctor: '::', _0: _p2._0, _1: model.messages})
+					});
+				return {ctor: '_Tuple2', _0: updated, _1: _elm_lang$core$Platform_Cmd$none};
+			case 'ActionMsg':
+				var _p3 = _p2._0;
+				if ((_p3.ctor === 'Move') && (_p3._0.ctor === '_Tuple2')) {
+					var _p7 = _p3._0._1;
+					var _p6 = _p3._0._0;
+					var _p4 = model;
+					var player = _p4.player;
+					var currentLocation = player.location;
+					var canMove = A2(
+						_user$project$Grid$isNeighbor,
+						currentLocation,
+						{x: _p6, y: _p7});
+					var updatedLocation = _elm_lang$core$Native_Utils.update(
+						currentLocation,
+						{x: _p6, y: _p7});
+					var updatedPlayer = _elm_lang$core$Native_Utils.update(
+						player,
+						{location: updatedLocation});
+					var _p5 = canMove ? {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{player: updatedPlayer}),
+						_1: A2(
+							_elm_lang$core$Basics_ops['++'],
+							'Moved to ',
+							A2(
 								_elm_lang$core$Basics_ops['++'],
-								'Moved to ',
+								_elm_lang$core$Basics$toString(_p6),
 								A2(
 									_elm_lang$core$Basics_ops['++'],
-									_elm_lang$core$Basics$toString(_p4),
-									A2(
-										_elm_lang$core$Basics_ops['++'],
-										', ',
-										_elm_lang$core$Basics$toString(_p5))))
-						} : {ctor: '_Tuple2', _0: model, _1: 'Cannot move there'};
-						var updated = _p3._0;
-						var message = _p3._1;
-						var _v2 = _user$project$Messages$Message(message),
-							_v3 = updated;
-						msg = _v2;
-						model = _v3;
-						continue update;
-					} else {
-						return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
-					}
-				default:
+									', ',
+									_elm_lang$core$Basics$toString(_p7))))
+					} : {ctor: '_Tuple2', _0: model, _1: 'Cannot move there'};
+					var updated = _p5._0;
+					var message = _p5._1;
+					return A2(
+						_user$project$Update$update,
+						_user$project$Messages$Message(message),
+						updated);
+				} else {
 					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
-			}
+				}
+			default:
+				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 		}
 	});
 
@@ -9522,11 +9565,11 @@ var _user$project$Map_View$renderTileImage = F2(
 			var _p3 = tile;
 			switch (_p3.ctor) {
 				case 'Grass':
-					return 'game-icon game-icon-grass grass';
+					return 'grassTile pixelImage tileImage';
 				case 'Hills':
-					return 'game-icon game-icon-hills hills';
+					return 'hillTile pixelImage tileImage';
 				default:
-					return 'game-icon game-icon-peaks mountain';
+					return 'mountainTile pixelImage tileImage';
 			}
 		}();
 		return A2(
@@ -9539,7 +9582,7 @@ var _user$project$Map_View$renderTileImage = F2(
 			{
 				ctor: '::',
 				_0: A2(
-					_elm_lang$html$Html$i,
+					_elm_lang$html$Html$div,
 					{
 						ctor: '::',
 						_0: _elm_lang$html$Html_Attributes$class(className),
@@ -9549,8 +9592,9 @@ var _user$project$Map_View$renderTileImage = F2(
 				_1: {ctor: '[]'}
 			});
 	});
-var _user$project$Map_View$renderCell = F3(
-	function (cell, x, y) {
+var _user$project$Map_View$renderCell = F4(
+	function (cell, distance, x, y) {
+		var opacity = 1 / distance;
 		var location = {ctor: '_Tuple2', _0: cell.x, _1: cell.y};
 		var contents = A2(_user$project$Map_View$renderTileImage, cell.tile, location);
 		var _p4 = _user$project$Map_Utils$cellSize;
@@ -9564,7 +9608,15 @@ var _user$project$Map_View$renderCell = F3(
 				_1: {
 					ctor: '::',
 					_0: _elm_lang$html$Html_Attributes$style(
-						A4(_user$project$Map_Utils$positionStyle, width, height, x, y)),
+						{
+							ctor: '::',
+							_0: {
+								ctor: '_Tuple2',
+								_0: 'opacity',
+								_1: _elm_lang$core$Basics$toString(opacity)
+							},
+							_1: A4(_user$project$Map_Utils$positionStyle, width, height, x, y)
+						}),
 					_1: {
 						ctor: '::',
 						_0: _elm_lang$html$Html_Events$onClick(
@@ -9580,40 +9632,49 @@ var _user$project$Map_View$renderCell = F3(
 				_1: {ctor: '[]'}
 			});
 	});
-var _user$project$Map_View$view = function (grid) {
-	var pixelLocation = function (cell) {
-		return A2(_user$project$Map_Utils$hexCoords, cell.x, cell.y);
-	};
-	var drawCell = function (cell) {
-		var _p5 = pixelLocation(cell);
-		var x = _p5.x;
-		var y = _p5.y;
-		return A3(_user$project$Map_View$renderCell, cell, x, y);
-	};
-	var cells = A2(
-		_elm_lang$core$List$map,
-		drawCell,
-		_user$project$Grid$toList(grid));
-	var _p6 = grid.size;
-	var width = _p6.width;
-	var height = _p6.height;
-	return A2(
-		_elm_lang$html$Html$div,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class('map'),
-			_1: {ctor: '[]'}
-		},
-		cells);
-};
-
-var _user$project$View$section = F2(
-	function (header, content) {
+var _user$project$Map_View$view = F2(
+	function (grid, playerLocation) {
+		var pixelLocation = function (cell) {
+			return A2(_user$project$Map_Utils$hexCoords, cell.x, cell.y);
+		};
+		var _p5 = grid.size;
+		var width = _p5.width;
+		var height = _p5.height;
+		var _p6 = playerLocation;
+		var playerX = _p6._0;
+		var playerY = _p6._1;
+		var drawCell = function (cell) {
+			var distance = A2(
+				_user$project$Grid$distance,
+				{x: cell.x, y: cell.y},
+				{x: playerX, y: playerY});
+			var _p7 = pixelLocation(cell);
+			var x = _p7.x;
+			var y = _p7.y;
+			return A4(_user$project$Map_View$renderCell, cell, distance, x, y);
+		};
+		var cells = A2(
+			_elm_lang$core$List$map,
+			drawCell,
+			_user$project$Grid$toList(grid));
 		return A2(
 			_elm_lang$html$Html$div,
 			{
 				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$class('section'),
+				_0: _elm_lang$html$Html_Attributes$class('map'),
+				_1: {ctor: '[]'}
+			},
+			cells);
+	});
+
+var _user$project$View$section_ = F3(
+	function (additionalClasses, header, content) {
+		return A2(
+			_elm_lang$html$Html$div,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$class(
+					A2(_elm_lang$core$Basics_ops['++'], 'tile is-parent ', additionalClasses)),
 				_1: {ctor: '[]'}
 			},
 			{
@@ -9622,54 +9683,157 @@ var _user$project$View$section = F2(
 					_elm_lang$html$Html$div,
 					{
 						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('sectionHeader'),
+						_0: _elm_lang$html$Html_Attributes$class('tile is-child notification boxSection'),
 						_1: {ctor: '[]'}
 					},
 					{
 						ctor: '::',
-						_0: _elm_lang$html$Html$text(header),
+						_0: A2(
+							_elm_lang$html$Html$div,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('_section content'),
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$h1,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$class('_sectionHeader'),
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text(header),
+										_1: {ctor: '[]'}
+									}),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$p,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$class('_sectionContent'),
+											_1: {ctor: '[]'}
+										},
+										{
+											ctor: '::',
+											_0: content,
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								}
+							}),
 						_1: {ctor: '[]'}
 					}),
-				_1: {
-					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$div,
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('sectionContent'),
-							_1: {ctor: '[]'}
-						},
-						{
-							ctor: '::',
-							_0: content,
-							_1: {ctor: '[]'}
-						}),
-					_1: {ctor: '[]'}
-				}
+				_1: {ctor: '[]'}
 			});
 	});
-var _user$project$View$progressBar = F2(
-	function (current, max) {
+var _user$project$View$section = _user$project$View$section_('');
+var _user$project$View$progressBar = F3(
+	function (color, current, max) {
+		var toRgba = F3(
+			function (r_, g_, b_) {
+				return A2(
+					_elm_lang$core$Basics_ops['++'],
+					'rgba(',
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						_elm_lang$core$Basics$toString(r_),
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							',',
+							A2(
+								_elm_lang$core$Basics_ops['++'],
+								_elm_lang$core$Basics$toString(g_),
+								A2(
+									_elm_lang$core$Basics_ops['++'],
+									',',
+									A2(
+										_elm_lang$core$Basics_ops['++'],
+										_elm_lang$core$Basics$toString(b_),
+										', 1)'))))));
+			});
+		var _p0 = color;
+		var r = _p0._0;
+		var g = _p0._1;
+		var b = _p0._2;
 		var pct = (_elm_lang$core$Basics$toFloat(current) / _elm_lang$core$Basics$toFloat(max)) * 100;
+		var barWidth = A2(
+			_elm_lang$core$Basics_ops['++'],
+			_elm_lang$core$Basics$toString(pct),
+			'px');
+		var height = A2(
+			_elm_lang$core$Basics_ops['++'],
+			_elm_lang$core$Basics$toString(10),
+			'px');
 		return A2(
 			_elm_lang$html$Html$div,
-			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$style(
+					{
+						ctor: '::',
+						_0: {ctor: '_Tuple2', _0: 'width', _1: '150px'},
+						_1: {
+							ctor: '::',
+							_0: {
+								ctor: '_Tuple2',
+								_0: 'backgroundColor',
+								_1: A3(toRgba, (r / 2) | 0, (g / 2) | 0, (b / 2) | 0)
+							},
+							_1: {
+								ctor: '::',
+								_0: {ctor: '_Tuple2', _0: 'display', _1: 'flex'},
+								_1: {
+									ctor: '::',
+									_0: {ctor: '_Tuple2', _0: 'border', _1: '1px solid #666'},
+									_1: {
+										ctor: '::',
+										_0: {ctor: '_Tuple2', _0: 'height', _1: height},
+										_1: {ctor: '[]'}
+									}
+								}
+							}
+						}
+					}),
+				_1: {ctor: '[]'}
+			},
 			{
 				ctor: '::',
 				_0: A2(
 					_elm_lang$html$Html$div,
-					{ctor: '[]'},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$style(
+							{
+								ctor: '::',
+								_0: {
+									ctor: '_Tuple2',
+									_0: 'backgroundColor',
+									_1: A3(toRgba, r, g, b)
+								},
+								_1: {
+									ctor: '::',
+									_0: {ctor: '_Tuple2', _0: 'width', _1: barWidth},
+									_1: {ctor: '[]'}
+								}
+							}),
+						_1: {ctor: '[]'}
+					},
 					{ctor: '[]'}),
 				_1: {ctor: '[]'}
 			});
 	});
 var _user$project$View$renderPlayer = function (player) {
-	var actualHeight = 50;
-	var actualWidth = 40;
+	var actualHeight = 32;
+	var actualWidth = 32;
 	var size = _user$project$Map_Utils$cellSize;
-	var _p0 = player.location;
-	var x = _p0.x;
-	var y = _p0.y;
+	var _p1 = player.location;
+	var x = _p1.x;
+	var y = _p1.y;
 	var pixelLocation = A2(_user$project$Map_Utils$hexCoords, x, y);
 	var offsetX = pixelLocation.x + ((size.width - actualWidth) / 2);
 	var offsetY = pixelLocation.y + ((size.height - actualHeight) / 2);
@@ -9688,10 +9852,10 @@ var _user$project$View$renderPlayer = function (player) {
 		{
 			ctor: '::',
 			_0: A2(
-				_elm_lang$html$Html$i,
+				_elm_lang$html$Html$div,
 				{
 					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$class('game-icon game-icon-pikeman'),
+					_0: _elm_lang$html$Html_Attributes$class('playerImg pixelImage'),
 					_1: {ctor: '[]'}
 				},
 				{ctor: '[]'}),
@@ -9731,26 +9895,43 @@ var _user$project$View$actions = function (model) {
 				{
 					ctor: '::',
 					_0: A2(
-						_elm_lang$html$Html$i,
+						_elm_lang$html$Html$a,
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class(
-								A2(_elm_lang$core$Basics_ops['++'], 'game-icon ', icon)),
-							_1: {ctor: '[]'}
+							_0: _elm_lang$html$Html_Attributes$class('button is-dark'),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$style(
+									{
+										ctor: '::',
+										_0: {ctor: '_Tuple2', _0: 'width', _1: '120px'},
+										_1: {
+											ctor: '::',
+											_0: {ctor: '_Tuple2', _0: 'justifyContent', _1: 'flex-start'},
+											_1: {ctor: '[]'}
+										}
+									}),
+								_1: {ctor: '[]'}
+							}
 						},
-						{ctor: '[]'}),
-					_1: {
-						ctor: '::',
-						_0: A2(
-							_elm_lang$html$Html$a,
-							{ctor: '[]'},
-							{
+						{
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$i,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class(
+										A2(_elm_lang$core$Basics_ops['++'], 'game-icon ', icon)),
+									_1: {ctor: '[]'}
+								},
+								{ctor: '[]'}),
+							_1: {
 								ctor: '::',
 								_0: _elm_lang$html$Html$text(desc),
 								_1: {ctor: '[]'}
-							}),
-						_1: {ctor: '[]'}
-					}
+							}
+						}),
+					_1: {ctor: '[]'}
 				});
 		});
 	var player = model.player;
@@ -9768,7 +9949,16 @@ var _user$project$View$actions = function (model) {
 				ctor: '::',
 				_0: A2(
 					_elm_lang$html$Html$div,
-					{ctor: '[]'},
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$style(
+							{
+								ctor: '::',
+								_0: {ctor: '_Tuple2', _0: 'width', _1: '150px'},
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					},
 					{
 						ctor: '::',
 						_0: _elm_lang$html$Html$text(
@@ -9848,7 +10038,7 @@ var _user$project$View$playerStats = function (player) {
 		_elm_lang$html$Html$div,
 		{
 			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class('playerInfo'),
+			_0: _elm_lang$html$Html_Attributes$class('tile is-child playerInfo'),
 			_1: {ctor: '[]'}
 		},
 		{
@@ -9907,9 +10097,12 @@ var _user$project$View$playerStats = function (player) {
 		});
 };
 var _user$project$View$drawMap = function (model) {
-	var _p1 = model.map.size;
-	var width = _p1.width;
-	var height = _p1.height;
+	var _p2 = model.player.location;
+	var x = _p2.x;
+	var y = _p2.y;
+	var _p3 = model.map.size;
+	var width = _p3.width;
+	var height = _p3.height;
 	var grid = model.map.grid;
 	return A2(
 		_elm_lang$html$Html$div,
@@ -9924,12 +10117,15 @@ var _user$project$View$drawMap = function (model) {
 				_elm_lang$html$Html$div,
 				{
 					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$class('mapContainer'),
+					_0: _elm_lang$html$Html_Attributes$class('mapContainer map3d_'),
 					_1: {ctor: '[]'}
 				},
 				{
 					ctor: '::',
-					_0: _user$project$Map_View$view(model.map),
+					_0: A2(
+						_user$project$Map_View$view,
+						model.map,
+						{ctor: '_Tuple2', _0: x, _1: y}),
 					_1: {
 						ctor: '::',
 						_0: _user$project$View$renderPlayer(model.player),
@@ -9940,31 +10136,15 @@ var _user$project$View$drawMap = function (model) {
 		});
 };
 var _user$project$View$drawPlayerHp = function (player) {
-	var info = A2(
-		_elm_lang$html$Html$div,
-		{ctor: '[]'},
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html$text('HP 6/10'),
-			_1: {
-				ctor: '::',
-				_0: _elm_lang$html$Html$text('MP 10/10'),
-				_1: {
-					ctor: '::',
-					_0: _elm_lang$html$Html$text('Food 100/100'),
-					_1: {ctor: '[]'}
-				}
-			}
-		});
 	var kv = F2(
 		function (key, value) {
 			return A2(
-				_elm_lang$html$Html$tr,
+				_elm_lang$html$Html$div,
 				{ctor: '[]'},
 				{
 					ctor: '::',
 					_0: A2(
-						_elm_lang$html$Html$td,
+						_elm_lang$html$Html$div,
 						{
 							ctor: '::',
 							_0: _elm_lang$html$Html_Attributes$class('infoRowHeader'),
@@ -9978,16 +10158,66 @@ var _user$project$View$drawPlayerHp = function (player) {
 					_1: {
 						ctor: '::',
 						_0: A2(
-							_elm_lang$html$Html$td,
-							{ctor: '[]'},
+							_elm_lang$html$Html$div,
 							{
 								ctor: '::',
-								_0: _elm_lang$html$Html$text(value),
+								_0: _elm_lang$html$Html_Attributes$style(
+									{
+										ctor: '::',
+										_0: {ctor: '_Tuple2', _0: 'marginBottom', _1: '5px'},
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: value,
 								_1: {ctor: '[]'}
 							}),
 						_1: {ctor: '[]'}
 					}
 				});
+		});
+	var info = A2(
+		_elm_lang$html$Html$div,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('character'),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: A2(
+				kv,
+				'HP',
+				A3(
+					_user$project$View$progressBar,
+					{ctor: '_Tuple3', _0: 255, _1: 0, _2: 0},
+					player.hp.current,
+					player.hp.max)),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					kv,
+					'MP',
+					A3(
+						_user$project$View$progressBar,
+						{ctor: '_Tuple3', _0: 0, _1: 100, _2: 255},
+						5,
+						10)),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						kv,
+						'Food',
+						A3(
+							_user$project$View$progressBar,
+							{ctor: '_Tuple3', _0: 0, _1: 255, _2: 0},
+							100,
+							100)),
+					_1: {ctor: '[]'}
+				}
+			}
 		});
 	var header = function (content) {
 		return A2(
@@ -10003,49 +10233,14 @@ var _user$project$View$drawPlayerHp = function (player) {
 				_1: {ctor: '[]'}
 			});
 	};
-	return A2(
-		_elm_lang$html$Html$div,
-		{ctor: '[]'},
-		{
-			ctor: '::',
-			_0: A2(_user$project$View$section, 'Character', info),
-			_1: {ctor: '[]'}
-		});
-};
-var _user$project$View$middleSection = function (model) {
-	return A2(
-		_elm_lang$html$Html$div,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class('middleSection'),
-			_1: {ctor: '[]'}
-		},
-		{
-			ctor: '::',
-			_0: _user$project$View$drawPlayerHp(model.player),
-			_1: {
-				ctor: '::',
-				_0: A2(
-					_user$project$View$section,
-					'Map',
-					_user$project$View$drawMap(model)),
-				_1: {
-					ctor: '::',
-					_0: A2(
-						_user$project$View$section,
-						'Stats',
-						_user$project$View$playerStats(model.player)),
-					_1: {ctor: '[]'}
-				}
-			}
-		});
+	return A2(_user$project$View$section, 'Character', info);
 };
 var _user$project$View$bottomSection = function (model) {
 	return A2(
 		_elm_lang$html$Html$div,
 		{
 			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class('bottomSection'),
+			_0: _elm_lang$html$Html_Attributes$class('tile'),
 			_1: {ctor: '[]'}
 		},
 		{
@@ -10064,43 +10259,177 @@ var _user$project$View$bottomSection = function (model) {
 			}
 		});
 };
+var _user$project$View$middleSection = function (model) {
+	return A2(
+		_elm_lang$html$Html$div,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('tile'),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: _user$project$View$drawPlayerHp(model.player),
+			_1: {
+				ctor: '::',
+				_0: A3(
+					_user$project$View$section_,
+					'is-6',
+					'Map',
+					_user$project$View$drawMap(model)),
+				_1: {
+					ctor: '::',
+					_0: A3(
+						_user$project$View$section_,
+						'is-3',
+						'Stats',
+						_user$project$View$playerStats(model.player)),
+					_1: {ctor: '[]'}
+				}
+			}
+		});
+};
 var _user$project$View$mainSection = function (model) {
 	return A2(
 		_elm_lang$html$Html$div,
 		{
 			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class('mainSection'),
-			_1: {ctor: '[]'}
-		},
-		{
-			ctor: '::',
-			_0: _user$project$View$middleSection(model),
-			_1: {
-				ctor: '::',
-				_0: _user$project$View$bottomSection(model),
-				_1: {ctor: '[]'}
-			}
-		});
-};
-var _user$project$View$topBar = function (model) {
-	return A2(
-		_elm_lang$html$Html$div,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class('topBar'),
+			_0: _elm_lang$html$Html_Attributes$class('section'),
 			_1: {ctor: '[]'}
 		},
 		{
 			ctor: '::',
 			_0: A2(
-				_elm_lang$html$Html$span,
-				{ctor: '[]'},
+				_elm_lang$html$Html$div,
 				{
 					ctor: '::',
-					_0: _elm_lang$html$Html$text('top bar'),
+					_0: _elm_lang$html$Html_Attributes$class('container'),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$div,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('tile is-ancestor'),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$div,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('tile is-vertical'),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: _user$project$View$middleSection(model),
+									_1: {
+										ctor: '::',
+										_0: _user$project$View$bottomSection(model),
+										_1: {ctor: '[]'}
+									}
+								}),
+							_1: {ctor: '[]'}
+						}),
 					_1: {ctor: '[]'}
 				}),
 			_1: {ctor: '[]'}
+		});
+};
+var _user$project$View$topBar = function (model) {
+	return A2(
+		_elm_lang$html$Html$nav,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('nav has-shadow'),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$div,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('nav-left'),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$a,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('nav-item'),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text('top bar'),
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				}),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$div,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('nav-right'),
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$a,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('nav-item'),
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text('item 1'),
+								_1: {ctor: '[]'}
+							}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$a,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('nav-item'),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text('item 2'),
+									_1: {ctor: '[]'}
+								}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$a,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$class('nav-item'),
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text('item 3'),
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							}
+						}
+					}),
+				_1: {ctor: '[]'}
+			}
 		});
 };
 var _user$project$View$view = function (model) {
@@ -10108,7 +10437,7 @@ var _user$project$View$view = function (model) {
 		_elm_lang$html$Html$div,
 		{
 			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class('container'),
+			_0: _elm_lang$html$Html_Attributes$class('container_'),
 			_1: {ctor: '[]'}
 		},
 		{
