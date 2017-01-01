@@ -6,7 +6,7 @@ module Model exposing
      setPlayerLocation, moveTo
     )
 
-import Animations
+import Animations.Model
 import Dict exposing (Dict)
 import Types exposing (..)
 import Map.Model exposing (Map, createMap)
@@ -17,7 +17,7 @@ type alias Model =
     {
         currentTick: Float,
         state: GameState,
-        animations: Animations.Model,
+        animations: Animations.Model.Animations,
         map: Map,
         player: Player,
         messages: List String
@@ -57,7 +57,7 @@ createModel =
     {
         currentTick = 0,
         state = Map,
-        animations = Animations.init,
+        animations = Animations.Model.init,
         player = initializePlayer,
         map = createMap,
         messages = ["test message", "test message 2"]

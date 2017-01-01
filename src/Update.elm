@@ -7,7 +7,8 @@ import Model exposing (Model, setPlayerLocation, PlayerMovement(..), moveTo)
 import Messages exposing (..)
 import Grid exposing (isNeighbor)
 import RandomEvents
-import Animations
+import Animations.Model
+import Animations.Update
 import Map.Utils exposing (hexCoords)
 
 
@@ -15,7 +16,7 @@ update: Message -> Model -> (Model, Cmd Message)
 update msg model =
     case msg of
         Tick time ->
-            animationUpdate msg model
+            Animations.Update.update msg model
 
         _ ->
             case model.state of
@@ -25,64 +26,6 @@ update msg model =
                     mapUpdate msg model
                 _ ->
                     (model, Cmd.none)
-
-
-animationUpdate: Message -> Model -> (Model, Cmd Message)
-animationUpdate msg model =
-    case msg of
-        Tick time ->
-            let
-                location = model.player.location
-                (newLocation, isMovementComplete) =
-                    case location of
-                        Moving pixelLocation toCoords ->
-                            case model.animations.moving of
-                                Just animation ->
-                                    let
-                                        newLoc = Animations.animateCoordinates animation time
-                                        isComplete = Animations.isComplete animation time
-                                    in
-                                        (Moving newLoc toCoords, isComplete)
-                                Nothing ->
-                                    (CurrentLocation toCoords, True)
-
-                        CurrentLocation coords ->
-                            (CurrentLocation coords, True)
-
-                updatedModel =
-                    case newLocation of
-                        Moving pixelLocation toCoords ->
-                            let
-                                (movedPlayer, _) =
-                                    if isMovementComplete
-                                    then
-                                        update (ActionMsg <| Move (toCoords.x, toCoords.y)) model
-                                    else
-                                        {
-                                            model |
-                                                player = setPlayerLocation model.player pixelLocation
-                                        } ! []
-                            in
-                                {
-                                    movedPlayer |
-                                        currentTick = time,
-                                        animations =
-                                            if isMovementComplete
-                                            then
-                                                Animations.removeMovementAnimation model.animations
-                                            else
-                                                model.animations
-                                }
-
-                        CurrentLocation coords ->
-                            {
-                                model |
-                                    currentTick = time
-                            }
-            in
-                updatedModel ! []
-        _ ->
-            model ! []
 
 
 actionUpdate: Message -> Model -> (Model, Cmd Message)
@@ -135,7 +78,7 @@ doAction action model =
                                                 endPos = hexCoords x y
                                                 toPoint = \pos -> (round pos.x, round pos.y)
                                             in
-                                                Just <| Animations.newCoordinateAnimation (toPoint startPos) (toPoint endPos) model.currentTick
+                                                Just <| Animations.Model.newCoordinateAnimation (toPoint startPos) (toPoint endPos) model.currentTick
                                         else
                                             Nothing
                                 _ ->

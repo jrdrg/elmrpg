@@ -1,6 +1,6 @@
-module Animations exposing
+module Animations.Model exposing
     (
-     Model, init, update,
+     Animations, init,
      newCoordinateAnimation, animateCoordinates, isComplete,
      removeMovementAnimation
     )
@@ -11,7 +11,7 @@ import Animation exposing (from, to, duration)
 import Messages exposing (..)
 
 
-type alias Model =
+type alias Animations =
     {
         moving: Maybe CoordinateAnimation
     }
@@ -24,20 +24,11 @@ type alias CoordinateAnimation =
     }
 
 
-init: Model
+init: Animations
 init =
     {
         moving = Nothing
     }
-
-
-update: Message -> Model -> (Model, Cmd Message)
-update msg model =
-    case msg of
-        Tick time ->
-            model ! []
-        _ ->
-            model ! []
 
 
 newCoordinateAnimation: (Int, Int) -> (Int, Int) -> Time -> CoordinateAnimation
@@ -48,7 +39,7 @@ newCoordinateAnimation (startX, startY) (endX, endY) time =
     }
 
 
-removeMovementAnimation: Model -> Model
+removeMovementAnimation: Animations -> Animations
 removeMovementAnimation model =
     { model | moving = Nothing }
 
