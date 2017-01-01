@@ -13,11 +13,19 @@ import Map.View exposing (view)
 
 view: Model -> Html Message
 view model =
-    div [class "container_"]
-        [topBar model
-        ,mainSection model
-        ,renderModal model
-        ]
+    let
+        modal =
+            if model.state == Action
+            then
+                renderModal model
+            else
+                text ""
+    in
+        div [class "container_"]
+            [topBar model
+            ,mainSection model
+            ,modal
+            ]
 
 
 
@@ -79,7 +87,7 @@ middleSection: Model -> Html Message
 middleSection model =
     div [class "tile"]
         [drawPlayerHp model.player
-        ,section_ "is-6" "Map" <| drawMap model
+        ,section_ "is-6" "Map" <| renderMap model
         ,section_ "is-3" "Stats" <| playerStats model.player
         ]
 
@@ -109,16 +117,21 @@ drawPlayerHp player =
         section "Character" <| info
 
 
-drawMap: Model -> Html Message
-drawMap model =
+renderMap: Model -> Html Message
+renderMap model =
     let
         grid = model.map.grid
         {width, height} = model.map.size
-        {x, y} = model.player.location
+        {x, y} =
+            case model.player.location of
+                Moving pixelLocation toCoords ->
+                    toCoords
+                CurrentLocation coords ->
+                    coords
     in
         div [class "mapWrapper"]
             [div [class "mapContainer map3d_"]
-                 [Map.View.view model.map (x, y)
+                 [Map.View.view model.map (toFloat x, toFloat y)
                  ,renderPlayer model.player
                  ]
             ]
@@ -184,8 +197,14 @@ messages messages =
 renderPlayer: Player -> Html Message
 renderPlayer player =
     let
-        {x, y} = player.location
-        pixelLocation = hexCoords x y
+        -- {x, y} = player.location
+        -- pixelLocation = hexCoords (round x) (round y)
+        pixelLocation =
+            case player.location of
+                Moving location toCoords ->
+                    location
+                CurrentLocation coords ->
+                    hexCoords coords.x coords.y
         size = cellSize
         -- actualWidth = 40
         -- actualHeight = 50

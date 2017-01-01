@@ -2,54 +2,25 @@ module Model exposing
     (
      Model,
      createModel,
-     Player, Enemy
+     Player, PlayerMovement(..),
+     setPlayerLocation, moveTo
     )
 
-
-import Grid exposing (..)
+import Animations
 import Dict exposing (Dict)
 import Types exposing (..)
-import Map.Model exposing (..)
-import StatusEffects exposing (..)
+import Map.Model exposing (Map, createMap)
+import StatusEffects exposing (StatusEffect(..))
 
 
 type alias Model =
     {
         currentTick: Float,
         state: GameState,
+        animations: Animations.Model,
         map: Map,
         player: Player,
         messages: List String
-    }
-
-
-type alias Weapon =
-    {
-        name: String,
-        weaponType: WeaponType,
-        damage: { n: Int, d: Int, mod: Int } -- e.g. 2d8 + 1
-    }
-
-
-type alias Armor =
-    {
-        name: String,
-        ac: Int,
-        damageReduction: Int
-    }
-
-
-type alias Ring =
-    {
-
-    }
-
-
-type alias Entity a =
-    {
-        a |
-        hp: { current: Int, max: Int },
-        status: List StatusEffect
     }
 
 
@@ -62,36 +33,31 @@ type alias Player =
         int: Int,
         agi: Int,
         end: Int,
-        location: Grid.Point {},
+        location: PlayerMovement,
         xp: { current: Int, next: Int },
         equipped: Equipment
     }
 
 
-type alias Equipment =
+type PlayerMovement =
+    Moving (Location Float) (Location Int) |
+    CurrentLocation (Location Int)
+
+
+type alias Location a =
     {
-        weapon: Maybe Weapon,
-        armor: Maybe Armor,
-        ring: Maybe Ring
+        x: a,
+        y: a
     }
-
-
-type alias Enemy =
-    Entity
-    {
-
-    }
-
-
 
 -- Init functions
-
 
 createModel: Model
 createModel =
     {
         currentTick = 0,
         state = Map,
+        animations = Animations.init,
         player = initializePlayer,
         map = createMap,
         messages = ["test message", "test message 2"]
@@ -104,7 +70,7 @@ initializePlayer =
         level = 1,
         hp = { current = 6, max = 10 },
         xp = { current = 0, next = 10 },
-        location = { x = 3, y = 4 },
+        location = CurrentLocation { x = 3, y = 4 },
         str = 5,
         dex = 7,
         int = 7,
@@ -117,6 +83,27 @@ initializePlayer =
                 ring = Nothing
             },
         status = [Normal]
+    }
+
+
+setPlayerLocation: Player -> Location Float -> Player
+setPlayerLocation player location =
+    case player.location of
+        Moving pixelLocation toPoint ->
+            {
+                player |
+                    location =
+                        Moving { x = location.x, y = location.y } toPoint
+            }
+        _ ->
+            player
+
+
+moveTo: Player -> Location Int -> Player
+moveTo player location =
+    {
+        player |
+            location = CurrentLocation location
     }
 
 

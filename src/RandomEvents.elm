@@ -9,8 +9,8 @@ randomEvent: Int -> Model -> (Model, Cmd Message)
 randomEvent probability model =
     if probability < 50
     then
-        ({ model |
+        { model |
                state = Action
-         }, Cmd.none)
+        } ! [Cmd.none]
     else
-        (model, Cmd.none)
+        model ! [Cmd.none]

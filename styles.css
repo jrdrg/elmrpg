@@ -212,14 +212,9 @@ body {
 }
 
 .player {
-    /* background-color: white; */
-    /* color: white; */
     color: black;
-    /* font-size: 40px; */
     font-size: 32px;
     position: absolute;
-    transition: 0.5s ease;
-    /* text-shadow: 2px 1px 2px #000 */
     text-shadow: 1px 1px 1px #fff;
 }
 

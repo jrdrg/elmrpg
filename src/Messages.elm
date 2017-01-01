@@ -2,7 +2,6 @@ module Messages exposing (..)
 
 
 import Types exposing (..)
-import Model exposing (..)
 import Time exposing (Time)
 
 
@@ -16,6 +15,7 @@ type Message =
 
 
 type Action =
+    BeginMove Location |
     Move Location |
     Gather Resource |
     StartCombat Enemy

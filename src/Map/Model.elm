@@ -1,26 +1,13 @@
-module Map.Model exposing (Map, createMap, Hex, Tile, Tile(..))
+module Map.Model exposing (Map, createMap)
+
 
 import Array exposing (..)
 import Grid exposing (..)
+import Map.Types exposing (Hex, Tile(..))
 
 
-type alias Map = Grid Hex
-
-
-type alias Hex =
-    Grid.Point
-    {
-        tile: Tile
-    }
-
-
-type Tile =
-    Grass |
-    Forest |
-    Mountain |
-    Hills |
-    Water
-
+type alias Map =
+    Grid Hex
 
 
 createMap: Grid Hex

@@ -4,12 +4,17 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 import Messages exposing (..)
-import Grid exposing (..)
+import Grid
 import Map.Utils exposing (cellSize, positionStyle, hexCoords)
-import Map.Model exposing (Map, Hex, Tile, Tile(..))
+import Map.Model exposing (Map)
+import Map.Types exposing (Hex, Tile, Tile(..))
 
 
-view: Grid Hex -> (Int, Int) -> Html Message
+type alias Location a =
+    (a, a)
+
+
+view: Map -> Location Float -> Html Message
 view grid playerLocation =
     let
         (playerX, playerY) = playerLocation
@@ -19,9 +24,9 @@ view grid playerLocation =
             \cell ->
                 let
                     {x, y} = pixelLocation cell
-                    distance = Grid.distance {x = cell.x, y = cell.y} { x = playerX, y = playerY }
+                    distance = Grid.distance {x = cell.x, y = cell.y} { x = round playerX, y = round playerY }
                 in
-                    renderCell cell distance x y
+                    renderCell cell distance (x, y)
         cells =
             grid |> Grid.toList |> List.map drawCell
     in
@@ -29,31 +34,37 @@ view grid playerLocation =
             cells
 
 
-renderCell: Hex -> Float -> Float -> Float -> Html Message
-renderCell cell distance x y =
+renderCell: Hex -> Float -> Location Float -> Html Message
+renderCell cell distance (x, y) =
     let
         {width, height} = cellSize
         location = (cell.x, cell.y)
-        contents = renderTileImage cell.tile location
+        contents = renderTileImage cell.tile
         opacity = 1 / distance
     in
         div [class "hex"
             ,style <| ("opacity", (toString opacity)) :: positionStyle width height x y
-            ,onClick <| ActionMsg (Move location)
+            ,onClick <| ActionMsg (BeginMove location)
             ]
             [contents]
 
 
-renderTileImage: Tile -> (Int, Int) -> Html Message
-renderTileImage tile location =
+renderTileImage: Tile  -> Html Message
+renderTileImage tile =
     let
-        className = case tile of
-                        -- Grass -> "game-icon game-icon-grass grass"
-                        Grass -> "grassTile pixelImage tileImage"
-                        -- Hills -> "game-icon game-icon-hills hills"
-                        Hills -> "hillTile pixelImage tileImage"
-                        -- _ -> "game-icon game-icon-peaks mountain"
-                        _ -> "mountainTile pixelImage tileImage"
+        className =
+            case tile of
+                Grass ->
+                    -- Grass -> "game-icon game-icon-grass grass"
+                    "grassTile pixelImage tileImage"
+                Hills ->
+                    -- Hills -> "game-icon game-icon-hills hills"
+                    "hillTile pixelImage tileImage"
+                Mountain ->
+                    "mountainTile pixelImage tileImage"
+                _ ->
+                    -- _ -> "game-icon game-icon-peaks mountain"
+                    "mountainTile pixelImage tileImage"
     in
         div [class "hexImg"]
             [div [class className]
@@ -61,7 +72,7 @@ renderTileImage tile location =
             ]
 
 
-renderTile: Tile -> (Int, Int) -> Html Message
+renderTile: Tile -> Location Int -> Html Message
 renderTile tile location =
     let
         (x, y) = case tile of
