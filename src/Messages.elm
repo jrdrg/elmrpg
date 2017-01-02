@@ -8,6 +8,7 @@ import Combat.Messages
 
 type Message =
     Tick Time |
+    RestartGame |
     ChangeState GameState |
     ActionMsg Action |
     Message String |

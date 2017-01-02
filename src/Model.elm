@@ -37,6 +37,7 @@ type alias Player =
         end: Int,
         location: PlayerMovement,
         xp: { current: Int, next: Int },
+        mp: CurrentMax,
         food: CurrentMax,
         equipped: Equipment
     }
@@ -73,10 +74,11 @@ initializePlayer =
     {
         level = 1,
         speed = 1,
-        hp = { current = 7, max = 10 },
-        food = { current = 70, max = 100 },
+        hp = { current = 10, max = 10 },
+        mp = { current = 10, max = 10 },
+        food = { current = 5, max = 20 },
         xp = { current = 0, next = 10 },
-        location = CurrentLocation { x = 3, y = 4 },
+        location = CurrentLocation { x = 2, y = 3 },
         str = 5,
         dex = 7,
         int = 7,

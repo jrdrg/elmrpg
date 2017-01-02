@@ -13,7 +13,11 @@ update: Messages.Message -> Model -> (Model, Cmd Messages.Message)
 update msg model =
     case msg of
         CombatMsg combatMessage ->
-            doCombat combatMessage model
+            case model.state of
+                GameOver message ->
+                    model ! []
+                _ ->
+                    doCombat combatMessage model
 
         _ ->
             model ! []
@@ -23,7 +27,7 @@ doCombat: Combat.Messages.Message -> Model -> (Model, Cmd Messages.Message)
 doCombat msg model =
     case msg of
         PlayerAttack key ->
-            model ! [Random.generate (\dmg -> CombatMsg <| (ResolveDamage <| EnemyTarget key) dmg) (Random.int 1 5)]
+            model ! [Random.generate (CombatMsg << (ResolveDamage <| EnemyTarget key)) (Random.int 1 5)]
 
         ResolveDamage target damage ->
             case target of

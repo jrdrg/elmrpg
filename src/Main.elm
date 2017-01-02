@@ -2,6 +2,7 @@ module Main exposing (..)
 
 import Html
 import AnimationFrame
+import Types exposing (GameState(..))
 import Update exposing (update)
 import Model exposing (Model, createModel)
 import View exposing (view)
@@ -26,6 +27,10 @@ init =
 
 subscriptions: Model -> Sub Message
 subscriptions model =
-    Sub.batch [
-         AnimationFrame.times Tick
-        ]
+    case model.state of
+        GameOver reason ->
+            Sub.none
+        _ ->
+            Sub.batch [
+                 AnimationFrame.times Tick
+                ]

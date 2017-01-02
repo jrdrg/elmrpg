@@ -20,17 +20,19 @@ update msg model =
 playerMove: Time -> Model -> (Model, Cmd Message)
 playerMove time model =
     let
-        location = model.player.location
+        {player, animations} = model
+        location = player.location
+
         (newLocation, isMovementComplete) =
             case location of
                 Moving pixelLocation toCoords ->
-                    case model.animations.moving of
+                    case animations.moving of
                         Just animation ->
                             let
-                                newLoc = Animations.Model.animateCoordinates animation time
+                                newPixelLocation = Animations.Model.animateCoordinates animation time
                                 isComplete = Animations.Model.isComplete animation time
                             in
-                                (Moving newLoc toCoords, isComplete)
+                                (Moving newPixelLocation toCoords, isComplete)
                         Nothing ->
                             (CurrentLocation toCoords, True)
 

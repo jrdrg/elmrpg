@@ -10,6 +10,7 @@ import Messages exposing (Message(..))
 import Map.Utils exposing (cellSize, hexCoords, positionStyle)
 import Map.View
 import Combat.View
+import GameOver
 
 
 view: Model -> Html Message
@@ -18,21 +19,28 @@ view model =
         modal =
             if model.state == Action
             then
-                renderModal model
+                renderActionModal model
             else
                 text ""
+        currentView =
+            case model.state of
+                GameOver message ->
+                    GameOver.view model
+                _ ->
+                    div []
+                        [mainSection model
+                        ,modal
+                        ,Combat.View.view model]
     in
         div [class "container_"]
             [topBar model
-            ,mainSection model
-            ,modal
-            ,Combat.View.view model
+            ,currentView
             ]
 
 
 
-renderModal: Model -> Html Message
-renderModal model =
+renderActionModal: Model -> Html Message
+renderActionModal model =
     let
         modalClass =
             if model.state == Action
@@ -97,8 +105,9 @@ middleSection model =
 bottomSection: Model -> Html Message
 bottomSection model =
     div [class "tile"]
-        [section "Actions" <| actions model
-        ,section "Messages" <| messages model.messages
+        [--section "Actions" <| actions model
+        --,
+            section "Messages" <| messages model.messages
         ]
 
 
@@ -113,8 +122,8 @@ drawPlayerHp player =
         info =
             div [class "character"]
                 [kv "HP" (progressBar (255, 0, 0) player.hp.current player.hp.max)
-                ,kv "MP" (progressBar (0, 100, 255) 7 10)
-                ,kv "Food" (progressBar (0, 255, 0) player.food.current player.food.max)]
+                ,kv "MP" (progressBar (0, 100, 255) player.mp.current player.mp.max)
+                ,kv "Food" (progressBar (0, 200, 0) player.food.current player.food.max)]
     in
         section "Character" <| info
 
@@ -217,6 +226,22 @@ renderPlayer player =
             [div [class "playerImg pixelImage"] []]
 
 
+section: String -> Html Message -> Html Message
+section = section_ ""
+
+section_: String -> String -> Html Message -> Html Message
+section_ additionalClasses header content =
+    div [class <| "tile is-parent " ++ additionalClasses]
+        [div [class "tile is-child notification boxSection"]
+             [div [class "_section content"]
+                  [h1  [class "_sectionHeader"]
+                       [text header]
+                  ,p   [class "_sectionContent"]
+                       [content]]
+             ]
+        ]
+
+
 progressBar: (Int, Int, Int) -> Int -> Int -> Html Message
 progressBar color current max =
     let
@@ -234,19 +259,3 @@ progressBar color current max =
             [div [style [("backgroundColor", toRgba r g b)
                         ,("width", barWidth)]]
                  []]
-
-
-section: String -> Html Message -> Html Message
-section = section_ ""
-
-section_: String -> String -> Html Message -> Html Message
-section_ additionalClasses header content =
-    div [class <| "tile is-parent " ++ additionalClasses]
-        [div [class "tile is-child notification boxSection"]
-             [div [class "_section content"]
-                  [h1  [class "_sectionHeader"]
-                       [text header]
-                  ,p   [class "_sectionContent"]
-                       [content]]
-             ]
-        ]

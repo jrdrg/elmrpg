@@ -8,7 +8,7 @@ type GameState =
     Map |
     Battle |
     Action |
-    MessageDisplayed
+    GameOver String
 
 
 type Resource =
