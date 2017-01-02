@@ -11,6 +11,7 @@ import Dict exposing (Dict)
 import Types exposing (..)
 import Map.Model exposing (Map, createMap)
 import StatusEffects exposing (StatusEffect(..))
+import Combat.Model exposing (Combat)
 
 
 type alias Model =
@@ -18,9 +19,10 @@ type alias Model =
         currentTick: Float,
         state: GameState,
         animations: Animations.Model.Animations,
+        messages: List String,
         map: Map,
         player: Player,
-        messages: List String
+        combat: Maybe Combat
     }
 
 
@@ -35,6 +37,7 @@ type alias Player =
         end: Int,
         location: PlayerMovement,
         xp: { current: Int, next: Int },
+        food: CurrentMax,
         equipped: Equipment
     }
 
@@ -60,7 +63,8 @@ createModel =
         animations = Animations.Model.init,
         player = initializePlayer,
         map = createMap,
-        messages = ["test message", "test message 2"]
+        messages = ["test message", "test message 2"],
+        combat = Nothing
     }
 
 
@@ -68,7 +72,9 @@ initializePlayer: Player
 initializePlayer =
     {
         level = 1,
-        hp = { current = 6, max = 10 },
+        speed = 1,
+        hp = { current = 7, max = 10 },
+        food = { current = 70, max = 100 },
         xp = { current = 0, next = 10 },
         location = CurrentLocation { x = 3, y = 4 },
         str = 5,
@@ -99,8 +105,8 @@ setPlayerLocation player location =
             player
 
 
-moveTo: Player -> Location Int -> Player
-moveTo player location =
+moveTo: Location Int -> Player -> Player
+moveTo location player =
     {
         player |
             location = CurrentLocation location

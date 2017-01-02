@@ -8,7 +8,8 @@ import Types exposing (GameState(..))
 import Model exposing (..)
 import Messages exposing (Message(..))
 import Map.Utils exposing (cellSize, hexCoords, positionStyle)
-import Map.View exposing (view)
+import Map.View
+import Combat.View
 
 
 view: Model -> Html Message
@@ -25,6 +26,7 @@ view model =
             [topBar model
             ,mainSection model
             ,modal
+            ,Combat.View.view model
             ]
 
 
@@ -62,11 +64,11 @@ topBar: Model -> Html Message
 topBar model =
     nav [class "nav has-shadow"]
         [div [class "nav-left"]
-             [a [class "nav-item"] [text "top bar"]]
+             [a [class "nav-item"] [text "This game has no title yet"]]
         ,div [class "nav-right"]
-             [a [class "nav-item"] [text "item 1"]
-             ,a [class "nav-item"] [text "item 2"]
-             ,a [class "nav-item"] [text "item 3"]]
+             [a [class "nav-item"] [text "Map"]
+             ,a [class "nav-item"] [text "Inventory"]
+             ,a [class "nav-item"] [text "Status"]]
         ]
 
 
@@ -111,8 +113,8 @@ drawPlayerHp player =
         info =
             div [class "character"]
                 [kv "HP" (progressBar (255, 0, 0) player.hp.current player.hp.max)
-                ,kv "MP" (progressBar (0, 100, 255) 5 10)
-                ,kv "Food" (progressBar (0, 255, 0) 100 100)]
+                ,kv "MP" (progressBar (0, 100, 255) 7 10)
+                ,kv "Food" (progressBar (0, 255, 0) player.food.current player.food.max)]
     in
         section "Character" <| info
 
@@ -197,8 +199,6 @@ messages messages =
 renderPlayer: Player -> Html Message
 renderPlayer player =
     let
-        -- {x, y} = player.location
-        -- pixelLocation = hexCoords (round x) (round y)
         pixelLocation =
             case player.location of
                 Moving location toCoords ->
@@ -206,8 +206,6 @@ renderPlayer player =
                 CurrentLocation coords ->
                     hexCoords coords.x coords.y
         size = cellSize
-        -- actualWidth = 40
-        -- actualHeight = 50
         actualWidth = 32
         actualHeight = 32
         offsetX = pixelLocation.x + (size.width - actualWidth) / 2
@@ -217,11 +215,6 @@ renderPlayer player =
             ,style <| positionStyle actualWidth actualHeight offsetX offsetY
             ]
             [div [class "playerImg pixelImage"] []]
-        -- div [class "player player3d_"
-        --     ,style <| positionStyle actualWidth actualHeight offsetX offsetY
-        --     ]
-        --     [i [class "game-icon game-icon-battle-gear"] []]
-        --     -- [i [class "game-icon game-icon-pikeman"] []]
 
 
 progressBar: (Int, Int, Int) -> Int -> Int -> Html Message
@@ -229,7 +222,7 @@ progressBar color current max =
     let
         height = (10 |> toString) ++ "px"
         pct = ((toFloat current) / (toFloat max)) * 100
-        barWidth = (pct |> toString) ++ "px"
+        barWidth = (pct |> toString) ++ "%"
         (r, g, b) = color
         toRgba = \r_ g_ b_ -> "rgba(" ++ (toString r_) ++ "," ++ (toString g_) ++ "," ++ (toString b_) ++ ", 1)"
     in
@@ -245,9 +238,6 @@ progressBar color current max =
 
 section: String -> Html Message -> Html Message
 section = section_ ""
-
--- section2: String -> Html Message -> Html Message
--- section2 = section_ [("flex", "2")]
 
 section_: String -> String -> Html Message -> Html Message
 section_ additionalClasses header content =

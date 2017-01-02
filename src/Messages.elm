@@ -3,6 +3,7 @@ module Messages exposing (..)
 
 import Types exposing (..)
 import Time exposing (Time)
+import Combat.Messages
 
 
 type Message =
@@ -11,7 +12,7 @@ type Message =
     ActionMsg Action |
     Message String |
     RandomEvent Int |
-    CombatMsg CombatAction
+    CombatMsg Combat.Messages.Message
 
 
 type Action =
@@ -19,11 +20,6 @@ type Action =
     Move Location |
     Gather Resource |
     StartCombat Enemy
-
-
-type CombatAction =
-    Fight |
-    Run
 
 
 

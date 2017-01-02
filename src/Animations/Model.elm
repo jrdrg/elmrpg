@@ -8,7 +8,6 @@ module Animations.Model exposing
 
 import Time exposing (Time)
 import Animation exposing (from, to, duration)
-import Messages exposing (..)
 
 
 type alias Animations =
@@ -34,14 +33,14 @@ init =
 newCoordinateAnimation: (Int, Int) -> (Int, Int) -> Time -> CoordinateAnimation
 newCoordinateAnimation (startX, startY) (endX, endY) time =
     {
-        x = Animation.animation time |> from (toFloat startX) |> to (toFloat endX) |> duration (Time.second * 0.5),
-        y = Animation.animation time |> from (toFloat startY) |> to (toFloat endY) |> duration (Time.second * 0.5)
+        x = Animation.animation time |> from (toFloat startX) |> to (toFloat endX) |> duration (Time.second * 0.3),
+        y = Animation.animation time |> from (toFloat startY) |> to (toFloat endY) |> duration (Time.second * 0.3)
     }
 
 
 removeMovementAnimation: Animations -> Animations
-removeMovementAnimation model =
-    { model | moving = Nothing }
+removeMovementAnimation animations =
+    { animations | moving = Nothing }
 
 
 animateCoordinates: CoordinateAnimation -> Time ->  { x: Float, y: Float }

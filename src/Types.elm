@@ -24,6 +24,13 @@ type WeaponType =
     Ranged
 
 
+type alias CurrentMax =
+    {
+        current: Int,
+        max: Int
+    }
+
+
 type alias Weapon =
     {
         name: String,
@@ -46,14 +53,6 @@ type alias Ring =
     }
 
 
-type alias Entity a =
-    {
-        a |
-        hp: { current: Int, max: Int },
-        status: List StatusEffect
-    }
-
-
 type alias Equipment =
     {
         weapon: Maybe Weapon,
@@ -62,8 +61,20 @@ type alias Equipment =
     }
 
 
+type alias Entity a =
+    {
+        a |
+        hp: CurrentMax,
+        status: List StatusEffect,
+        speed: Float
+    }
+
+
 type alias Enemy =
     Entity
     {
-
+        key: Int,
+        name: String,
+        image: String,
+        imageCoords: (Int, Int)
     }
