@@ -6,7 +6,7 @@ import Types exposing (CurrentMax, Enemy, GameState(..))
 import Model exposing (Model)
 import Messages exposing (Message(..))
 import Combat.Model exposing (Combat)
-import Combat.Messages exposing (Message(..))
+import Combat.Messages exposing (Message(..), DamageTarget(..))
 
 
 update: Messages.Message -> Model -> (Model, Cmd Messages.Message)
@@ -23,17 +23,22 @@ doCombat: Combat.Messages.Message -> Model -> (Model, Cmd Messages.Message)
 doCombat msg model =
     case msg of
         PlayerAttack key ->
-            model ! [Random.generate (\dmg -> CombatMsg (EnemyDamaged key dmg)) (Random.int 1 5)]
+            model ! [Random.generate (\dmg -> CombatMsg <| (ResolveDamage <| EnemyTarget key) dmg) (Random.int 1 5)]
 
-        EnemyDamaged key damage ->
-            case model.combat of
-                Just combat ->
-                    ({
-                        model |
-                            combat = Just (damageEnemy combat key damage)
-                    } |> handleCombatEnded) ! []
-                Nothing ->
+        ResolveDamage target damage ->
+            case target of
+                PlayerTarget ->
                     model ! []
+
+                EnemyTarget key ->
+                    case model.combat of
+                        Just combat ->
+                            ({
+                                model |
+                                    combat = Just (damageEnemy combat key damage)
+                            } |> handleCombatEnded) ! []
+                        Nothing ->
+                            model ! []
         _ ->
             model ! []
 

@@ -7,4 +7,9 @@ type Message =
     EnemyAttack Int |
     PlayerTurn |
     PlayerAttack Int |
-    EnemyDamaged Int Int
+    ResolveDamage DamageTarget Int
+
+
+type DamageTarget =
+    PlayerTarget |
+    EnemyTarget Int
