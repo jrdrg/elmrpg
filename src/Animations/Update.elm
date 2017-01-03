@@ -46,7 +46,7 @@ playerMove time model =
                     (movedPlayer, cmd) =
                         if isMovementComplete
                         then
-                            model ! [Task.perform ActionMsg (Task.succeed (Move (toCoords.x, toCoords.y)))]
+                            model ! [Task.perform ActionMsg (Task.succeed <| Move (toCoords.x, toCoords.y))]
                         else
                             {
                                 model |

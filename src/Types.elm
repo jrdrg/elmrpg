@@ -5,6 +5,7 @@ import StatusEffects exposing (..)
 
 type GameState =
     Title |
+    Inventory |
     Map |
     Battle |
     Action |

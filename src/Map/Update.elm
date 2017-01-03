@@ -15,9 +15,13 @@ update msg model =
     case msg of
         Message message ->
             let
-                updated = {model | messages = List.take 10 (message :: model.messages)}
+                updated =
+                    {
+                        model |
+                            messages = List.take 10 (message :: model.messages)
+                    }
             in
-                (updated, Cmd.none)
+                updated ! []
 
         RandomEvent probability ->
             RandomEvents.randomEvent probability model

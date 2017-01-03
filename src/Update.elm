@@ -22,21 +22,22 @@ update msg model =
         _ ->
             case model.state of
                 Action ->
-                    actionUpdate msg model
+                    let
+                        (newModel, cmd) = actionUpdate msg model
+                    in
+                        GameOver.checkForGameOver newModel ! [cmd]
 
                 Battle ->
                     let
-                        updater =
-                            Combat.Update.update msg << GameOver.checkForGameOver
+                        (newModel, cmd) = Combat.Update.update msg model
                     in
-                        updater model
+                        GameOver.checkForGameOver newModel ! [cmd]
 
                 Map ->
                     let
-                        updater =
-                            Map.Update.update msg << GameOver.checkForGameOver
+                        (newModel, cmd) = Map.Update.update msg model
                     in
-                        updater model
+                        GameOver.checkForGameOver newModel ! [cmd]
 
                 _ ->
                     (model, Cmd.none)

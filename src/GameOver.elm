@@ -34,21 +34,17 @@ view model =
 checkForGameOver: Model -> Model
 checkForGameOver model =
     let
+        gameOverModel =
+            \message -> { model | state = GameOver message }
         {player} = model
         outOfFood = player.food.current <= 0
         gotKilled = player.hp.current <= 0
     in
         if outOfFood
         then
-            {
-                model |
-                    state = GameOver "You starved."
-            }
+            gameOverModel "You starved."
         else if gotKilled
              then
-                 {
-                     model |
-                         state = GameOver "You got killed."
-                 }
+                 gameOverModel "You got killed."
              else
                  model
