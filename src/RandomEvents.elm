@@ -18,7 +18,7 @@ randomEvent probability model =
          then
              {
                  model |
-                     state = Battle,
+                     state = Battle (Just []), -- TODO fix this
                      combat = Just initializeNewCombat
              } ! []
     else

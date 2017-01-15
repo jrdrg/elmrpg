@@ -7,7 +7,7 @@ type GameState =
     Title |
     Inventory |
     Map |
-    Battle |
+    Battle (Maybe (List Enemy)) | -- get rid of "combat" part of Model
     Action |
     GameOver String
 

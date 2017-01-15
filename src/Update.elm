@@ -20,27 +20,21 @@ update msg model =
             createModel ! []
 
         _ ->
-            case model.state of
-                Action ->
-                    let
-                        (newModel, cmd) = actionUpdate msg model
-                    in
-                        GameOver.checkForGameOver newModel ! [cmd]
+            let (newModel, cmd) =
+                case model.state of
+                    Action ->
+                        actionUpdate msg model
 
-                Battle ->
-                    let
-                        (newModel, cmd) = Combat.Update.update msg model
-                    in
-                        GameOver.checkForGameOver newModel ! [cmd]
+                    Battle enemies -> -- TODO pass this to Combat.Update
+                        Combat.Update.update msg model
 
-                Map ->
-                    let
-                        (newModel, cmd) = Map.Update.update msg model
-                    in
-                        GameOver.checkForGameOver newModel ! [cmd]
+                    Map ->
+                        Map.Update.update msg model
 
-                _ ->
-                    (model, Cmd.none)
+                    _ ->
+                        (model, Cmd.none)
+            in
+                GameOver.checkForGameOver newModel ! [cmd]
 
 
 actionUpdate: Message -> Model -> (Model, Cmd Message)

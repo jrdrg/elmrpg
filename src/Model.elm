@@ -64,7 +64,7 @@ createModel =
         animations = Animations.Model.init,
         player = initializePlayer,
         map = createMap,
-        messages = ["test message", "test message 2"],
+        messages = List.repeat 10 ".",
         combat = Nothing
     }
 
