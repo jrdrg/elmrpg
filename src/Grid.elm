@@ -5,12 +5,12 @@ module Grid exposing
     )
 
 
-import Array exposing (Array)
+import Dict exposing (Dict)
 
 
 type alias Grid a =
     {
-        grid: Array a,
+        grid: Dict (Int, Int) a,
         size: Size
     }
 
@@ -30,12 +30,22 @@ type alias Size =
     }
 
 
-initializeGrid: (Int -> Int -> a) -> Int -> Int -> Grid a
+initializeGrid: (Int -> Int -> Point a) -> Int -> Int -> Grid (Point a)
 initializeGrid initCell width height =
     {
-        grid = Array.initialize (height * width) (initCell width),
+        grid = (cells initCell width (width * height)) |> Dict.fromList,
         size = { width = width, height = height }
     }
+
+
+cells: (Int -> Int -> Point a) -> Int -> Int -> List ((Int, Int), Point a)
+cells initCell width length =
+    let
+        keyPairs = List.range 0 length
+                 |> List.map (initCell width)
+                 |> List.map (\h -> ((h.x, h.y), h))
+    in
+        keyPairs
 
 
 isNeighbor: Point a -> Point a -> Bool
@@ -46,15 +56,14 @@ isNeighbor p1 p2 =
 elementAt: Grid a -> Int -> Int -> Maybe a
 elementAt {grid, size} x y =
     let
-        index = (y * size.width) + x
-        element = Array.get index grid
+        element = Dict.get (x, y) grid
     in
         element
 
 
 toList: Grid a -> List a
 toList grid =
-    Array.toList grid.grid
+    Dict.values grid.grid
 
 
 distance: Point a -> Point a -> Float
