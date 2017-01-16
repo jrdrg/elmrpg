@@ -2,9 +2,8 @@ module Main exposing (..)
 
 import Html
 import AnimationFrame
-import Types exposing (GameState(..))
 import Update exposing (update)
-import Model exposing (Model, createModel)
+import Model exposing (Model, GameState(..), createModel)
 import View exposing (view)
 import Messages exposing (..)
 

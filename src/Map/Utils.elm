@@ -34,6 +34,15 @@ hexCoords x y =
         }
 
 
+-- Convert axial coords to screen coords
+toScreenFlat: Int -> Int -> { x: Float, y: Float }
+toScreenFlat x y =
+    {
+        x = cellSizeX * 3 / 2 * (toFloat x),
+        y = cellSizeY * (sqrt 3) * ((toFloat y) + (toFloat x) / 2)
+    }
+
+
 positionStyle: Float -> Float -> Float -> Float -> List (String, String)
 positionStyle width height x y =
     [("width", width |> toPx)

@@ -1,7 +1,6 @@
 module RandomEvents exposing (..)
 
-import Types exposing (GameState(..))
-import Model exposing (Model)
+import Model exposing (Model, GameState(..))
 import Messages exposing (Message(..))
 import Combat.Model exposing (initializeNewCombat)
 
@@ -18,8 +17,7 @@ randomEvent probability model =
          then
              {
                  model |
-                     state = Battle (Just []), -- TODO fix this
-                     combat = Just initializeNewCombat
+                     state = Battle (Just initializeNewCombat)
              } ! []
     else
         model ! []

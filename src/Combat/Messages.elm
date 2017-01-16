@@ -1,5 +1,7 @@
 module Combat.Messages exposing (..)
 
+import Types exposing (Enemy)
+
 
 type Message =
     StartBattle |
@@ -7,9 +9,9 @@ type Message =
     EnemyAttack Int |
     PlayerTurn |
     PlayerAttack Int |
-    ResolveDamage DamageTarget Int
+    ResolveDamage DamageTarget (Int, Int)
 
 
 type DamageTarget =
-    PlayerTarget |
+    PlayerTarget (Maybe Enemy) |
     EnemyTarget Int

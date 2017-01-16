@@ -1,12 +1,16 @@
 module Update exposing (..)
 
 
-import Types exposing (GameState(..))
-import Model exposing (Model, createModel, setPlayerLocation, PlayerMovement(..), moveTo)
+import Model exposing
+    (
+     Model, GameState(..),
+     createModel, setPlayerLocation, PlayerMovement(..), moveTo
+    )
 import Messages exposing (..)
 import Animations.Update
 import Map.Update
 import Combat.Update
+import Combat.Model exposing (initializeNewCombat)
 import GameOver
 
 
@@ -25,8 +29,8 @@ update msg model =
                     Action ->
                         actionUpdate msg model
 
-                    Battle enemies -> -- TODO pass this to Combat.Update
-                        Combat.Update.update msg model
+                    Battle combat ->
+                        Combat.Update.update msg model (Maybe.withDefault initializeNewCombat combat)
 
                     Map ->
                         Map.Update.update msg model

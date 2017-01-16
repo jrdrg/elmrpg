@@ -1,6 +1,7 @@
 module Model exposing
     (
      Model,
+     GameState(..),
      createModel,
      Player, PlayerMovement(..),
      setPlayerLocation, moveTo
@@ -21,31 +22,42 @@ type alias Model =
         animations: Animations.Model.Animations,
         messages: List String,
         map: Map,
-        player: Player,
-        combat: Maybe Combat
+        player: Player
     }
+
+
+type GameState =
+    Title |
+    Inventory |
+    Map |
+    Battle (Maybe Combat) |
+    Action |
+    GameOver String
 
 
 type alias Player =
     Entity
     {
         level: Int,
+        xp: { current: Int, next: Int },
         str: Int,
         dex: Int,
         int: Int,
         agi: Int,
         end: Int,
         location: PlayerMovement,
-        xp: { current: Int, next: Int },
         mp: CurrentMax,
         food: CurrentMax,
         equipped: Equipment
     }
 
 
+type alias PixelLocation = Location Float
+type alias MapCoordinates = Location Int
+
 type PlayerMovement =
-    Moving (Location Float) (Location Int) |
-    CurrentLocation (Location Int)
+    Moving PixelLocation MapCoordinates |
+    CurrentLocation MapCoordinates
 
 
 type alias Location a =
@@ -64,8 +76,7 @@ createModel =
         animations = Animations.Model.init,
         player = initializePlayer,
         map = createMap,
-        messages = List.repeat 10 ".",
-        combat = Nothing
+        messages = List.repeat 10 "."
     }
 
 

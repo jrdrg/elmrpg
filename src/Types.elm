@@ -3,15 +3,6 @@ module Types exposing (..)
 import StatusEffects exposing (..)
 
 
-type GameState =
-    Title |
-    Inventory |
-    Map |
-    Battle (Maybe (List Enemy)) | -- get rid of "combat" part of Model
-    Action |
-    GameOver String
-
-
 type Resource =
     Wood |
     Stone |

@@ -4,6 +4,7 @@ module Messages exposing (..)
 import Types exposing (..)
 import Time exposing (Time)
 import Combat.Messages
+import Model exposing (GameState(..))
 
 
 type Message =

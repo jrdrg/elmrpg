@@ -14,17 +14,9 @@ import Combat.Model exposing (Combat, initializeNewCombat)
 view: Model -> Html Messages.Message
 view model =
     case model.state of
-        Battle enemies -> -- TODO use this instead of 'combat'
-            let
-                combat =
-                    case model.combat of
-                        Just combat ->
-                            combat
-                        _ ->
-                            initializeNewCombat
+        Battle combat ->
+            renderModal model (Maybe.withDefault initializeNewCombat combat)
 
-            in
-                renderModal model combat
         _ ->
             text ""
 
